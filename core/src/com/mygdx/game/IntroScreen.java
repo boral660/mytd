@@ -70,13 +70,23 @@ OrthographicCamera camera;
          stage.addActor(ExitButton);
          
      
-    
+      Gdx.input.setInputProcessor(stage);// Make the stage consume event
+        
+        newGameButton.addListener( new ClickListener() {
+             @Override
+        public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+              game.setScreen( game.mapsScreen );
+               return true;
+         }
+        } );
+        
         Gdx.input.setInputProcessor(stage);// Make the stage consume event
         
         ExitButton.addListener( new ClickListener() {
              @Override
         public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-              game.setScreen( game.gameScreen );
+            System.runFinalizersOnExit(true);
+            System.exit(0);
             return true;
          }
     } );
@@ -139,49 +149,5 @@ private void createBasicSkin(){
   textButtonStyle.font = skin.getFont("default");
   skin.add("default", textButtonStyle);
  
-}
-        public class MyInputProcessor implements InputProcessor {
-    @Override
-    public boolean keyDown (int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp (int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped (char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown (int x, int y, int pointer, int button) {
-         game.setScreen(game.gameScreen);
-         return true;
-    }
-
-    @Override
-    public boolean touchUp (int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged (int x, int y, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled (int amount) {
-        return false;
-    }
-
-        @Override
-        public boolean mouseMoved(int i, int i1) {
-            return false;
-        
-    }
-}
-       
+    }    
 }

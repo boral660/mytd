@@ -26,7 +26,7 @@ public class TDGame extends Game {
    
 
     public IntroScreen introScreen;
-    public GameScreen gameScreen;
+    public MapsScreen mapsScreen;
 	Texture MapIm;
         Texture RoadIm;
          Map TestMap=new Map("Test", 100,10,10);
@@ -43,7 +43,7 @@ public class TDGame extends Game {
 	public void create () {
             
                  introScreen = new IntroScreen(this);
-                 gameScreen = new GameScreen(this);
+                 mapsScreen = new MapsScreen(this);
             this.setScreen(introScreen);
 
 	}
