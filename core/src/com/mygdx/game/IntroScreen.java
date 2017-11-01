@@ -39,10 +39,10 @@ import java.util.Iterator;
 class IntroScreen implements Screen{
 TDGame  game;
 OrthographicCamera camera;
- private SpriteBatch batch;
-  private Texture intrIm;
-  Skin skin = new Skin();
-     Stage stage = new Stage();
+private SpriteBatch batch;
+private Texture intrIm;
+Skin buttonsSkin = new Skin();
+Stage stage = new Stage();
      
     public IntroScreen(TDGame aThis) {
          super();
@@ -59,12 +59,12 @@ OrthographicCamera camera;
          Gdx.input.setInputProcessor(stage);// Make the stage consume event
 
         createBasicSkin();
-        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        TextButton newGameButton = new TextButton("New game", buttonsSkin); // Use the initialized skin
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         newGameButton.setTouchable(Touchable.enabled);
         stage.addActor(newGameButton);
         
-        TextButton ExitButton = new TextButton("Exit", skin); // Use the initialized skin
+        TextButton ExitButton = new TextButton("Exit", buttonsSkin); // Use the initialized skin
         ExitButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2-Gdx.graphics.getHeight()/8);
         ExitButton.setTouchable(Touchable.enabled);
          stage.addActor(ExitButton);
@@ -132,22 +132,22 @@ OrthographicCamera camera;
 private void createBasicSkin(){
   //Create a font
   BitmapFont font = new BitmapFont();
-  skin.add("default", font);
+  buttonsSkin.add("default", font);
  
   //Create a texture
   Pixmap pixmap = new Pixmap((int)Gdx.graphics.getWidth()/4,(int)Gdx.graphics.getHeight()/12, Pixmap.Format.RGB888);
   pixmap.setColor(Color.WHITE);
   pixmap.fill();
-  skin.add("background",new Texture(pixmap));
+  buttonsSkin.add("background",new Texture(pixmap));
  
   //Create a button style
   TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-  textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
-  textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
-  textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
-  textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
-  textButtonStyle.font = skin.getFont("default");
-  skin.add("default", textButtonStyle);
+  textButtonStyle.up = buttonsSkin.newDrawable("background", Color.GRAY);
+  textButtonStyle.down = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
+  textButtonStyle.checked = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
+  textButtonStyle.over = buttonsSkin.newDrawable("background", Color.LIGHT_GRAY);
+  textButtonStyle.font = buttonsSkin.getFont("default");
+  buttonsSkin.add("default", textButtonStyle);
  
     }    
 }
