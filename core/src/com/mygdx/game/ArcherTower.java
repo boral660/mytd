@@ -11,6 +11,15 @@ package com.mygdx.game;
  */
 public class ArcherTower extends Tower {
 
+     /**
+     * Конструктор - башни
+     *
+     * @param position позиция башни
+     */
+    ArcherTower(Cell position)
+   {
+       _position=position;
+   }
     // Определяем урон башни
     @Override
     int damage() {

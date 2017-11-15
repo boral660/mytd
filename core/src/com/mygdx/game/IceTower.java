@@ -11,6 +11,16 @@ package com.mygdx.game;
  */
 public class IceTower extends Tower {
     
+     /**
+     * Конструктор - башни
+     *
+     * @param position позиция башни
+     */
+    IceTower(Cell position)
+   {
+       _position=position;
+   }
+    
     // Определяем урон башни
     @Override
     int damage() {

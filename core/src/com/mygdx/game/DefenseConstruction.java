@@ -15,7 +15,7 @@ public abstract class DefenseConstruction {
      /**
     * Позиция
     */
-   private Cell _position;
+   protected Cell _position;
     /**
     * Позиция
     */
@@ -26,7 +26,7 @@ public abstract class DefenseConstruction {
    /**
     * Урон
     */
-   private int _damage;
+   protected int _damage;
     /**
     * Урон
     */
@@ -37,7 +37,7 @@ public abstract class DefenseConstruction {
       /**
     * Цена
     */
-   private int _price;
+   protected int _price;
    
      /**
     * Цена

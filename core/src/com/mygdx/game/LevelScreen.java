@@ -34,7 +34,8 @@ private Texture mainCon;
 private Texture roadIm;
 int stepHeight;
 int stepWidth;
- int currentMoney;
+int currentMoney;
+private Texture defense;
 
     public LevelScreen(TDGame aThis, Map aMap) {
        super();
@@ -56,6 +57,8 @@ int stepWidth;
     public void show() {
         
     }
+    
+        
 
     @Override
     public void render(float f) {
@@ -74,18 +77,40 @@ int stepWidth;
             batch.draw(roadIm,  stepWidth+cell.width()*Cell.Size,stepHeight+cell.height()*Cell.Size, Cell.Size,Cell.Size);      
         }
         batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size, Cell.Size+15);
-
-       
+ 
+        //Количество золота
          FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
          FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 20;
         BitmapFont fontToGold = generator.generateFont(parameter); 
         generator.dispose(); 
+        fontToGold.draw(batch,"Gold: "+ currentMoney,Gdx.graphics.getWidth()*65/80 ,Gdx.graphics.getHeight()-Cell.Size);
         
-        fontToGold.draw(batch,"Gold: "+ map.moneyOnStart(),Gdx.graphics.getWidth()*65/80 ,Gdx.graphics.getHeight()-Cell.Size);
+        // Отрисовка башен
+        renderTower();
         batch.end();
     }
 
+    
+    public void renderTower() {
+         for (DefenseConstruction constuct:map._defenseConst)
+        {
+            if(constuct instanceof ArcherTower)
+            {
+                 defense=new Texture(Gdx.files.internal("ArcherTower.png"));
+            }
+            else if(constuct instanceof IceTower)
+            {
+                 defense=new Texture(Gdx.files.internal("IceTower.png"));
+            } else if(constuct instanceof LightTower)
+            {
+                 defense=new Texture(Gdx.files.internal("LightTower.png"));
+            }
+            batch.draw(defense,stepWidth + constuct.position().width()*Cell.Size, stepHeight+constuct.position().height()*Cell.Size,Cell.Size,Cell.Size );      
+       
+        }
+        
+    }
     @Override
     public void resize(int i, int i1) {
         
@@ -111,6 +136,7 @@ int stepWidth;
           gameIm.dispose();
         batch.dispose();
         roadIm.dispose();
+             defense.dispose();
     }
     
 }
