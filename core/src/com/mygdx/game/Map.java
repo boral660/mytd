@@ -79,7 +79,10 @@ public class Map {
     {
         return _moneyOnStart;
     }
-      
+       /**
+    * Клетки башнями
+    */
+    public  ArrayList<DefenseConstruction> _defenseConst=new ArrayList();
     /**
     * Клетки с дорогой
     */

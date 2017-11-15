@@ -24,11 +24,11 @@ public abstract class Tower extends DefenseConstruction {
     /**
     * Скорость атаки
     */
-   float _attackSpeed;
+   double _attackSpeed;
      /**
     * Скорость атаки
     */
-   float attackSpeed()
+   double attackSpeed()
    {
        return _attackSpeed;
    }
