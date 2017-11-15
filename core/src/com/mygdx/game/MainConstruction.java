@@ -11,7 +11,8 @@ package com.mygdx.game;
  * 
  */
 public class MainConstruction {
-     /**
+     
+    /**
      * Конструктор - создание главного здания
      *
      * @param position позиция главного здания
@@ -19,18 +20,19 @@ public class MainConstruction {
      */
     MainConstruction(Cell position, int integrity)
    {
+      
       _position = position;
       _integrity = integrity;
    }
      /**
     * Позиция здания
     */
-    Cell _position;
+   private Cell _position;
     
      /**
     * Прочность
     */
-    int _integrity;
+     private int _integrity;
     
       /**
     * Позиция здания

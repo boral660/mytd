@@ -21,15 +21,22 @@ public class Map {
      * @param width ширина
      * 
      */
-    Map(String name, int moneyOnStart, int width,int height)
+    Map(String name, int moneyOnStart, int width,int height,MainConstruction main)
    {
+       _main=main;
        _name = name;
        _moneyOnStart = moneyOnStart;
       _height = height;
       _width = width;
    }
     
+    private MainConstruction _main;
     
+    MainConstruction main()
+    {
+        return _main;
+    }
+   
     /**
     * Название карты
     */

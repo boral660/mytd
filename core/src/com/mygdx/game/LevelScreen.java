@@ -24,7 +24,8 @@ Map map;
 OrthographicCamera camera;
 private SpriteBatch batch;
 private Texture gameIm;
-Texture roadIm;
+private Texture mainCon;
+private Texture roadIm;
 int stepHeight;
 int stepWidth;
 
@@ -52,6 +53,7 @@ int stepWidth;
     @Override
     public void render(float f) {
           roadIm = new Texture(Gdx.files.internal("road.png"));
+          mainCon=new Texture(Gdx.files.internal("mainConstuct.png"));
           Gdx.gl.glClearColor(0, 0, 0.2f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        batch.begin();
@@ -61,6 +63,7 @@ int stepWidth;
         {
             batch.draw(roadIm,  stepWidth+cell.width()*Cell.Size,stepHeight+cell.height()*Cell.Size, Cell.Size,Cell.Size);      
         }
+        batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size+25, Cell.Size+25);
         
         
         batch.end();
@@ -90,6 +93,7 @@ int stepWidth;
     public void dispose() {
           gameIm.dispose();
         batch.dispose();
+        roadIm.dispose();
     }
     
 }

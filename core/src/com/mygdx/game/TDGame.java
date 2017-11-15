@@ -43,8 +43,9 @@ public class TDGame extends Game {
 	
 	@Override
 	public void create () {
+          MainConstruction main=new MainConstruction(new Cell(4,3),250);
             // Создать первую карту
-          Map TestMap=new Map("Test1", 100,16,8);
+          Map TestMap=new Map("Test1", 100,16,8,main);
           TestMap._roadCell.add(0,new Cell(0,0));
           TestMap._roadCell.add(1,new Cell(0,1));
           TestMap._roadCell.add(2,new Cell(0,2));
@@ -52,11 +53,11 @@ public class TDGame extends Game {
           TestMap._roadCell.add(4,new Cell(1,3));
           TestMap._roadCell.add(5,new Cell(2,3));
           TestMap._roadCell.add(5,new Cell(3,3));
-          
+
           mapsList.add(TestMap);
-           TestMap=new Map("Test2", 50,16,16);
+           TestMap=new Map("Test2", 50,16,16,main);
           mapsList.add(TestMap);
-           TestMap=new Map("Test3", 600,16,16);
+           TestMap=new Map("Test3", 600,16,16,main);
           mapsList.add(TestMap);
                  introScreen = new IntroScreen(this);
                  mapsScreen = new MapsScreen(this);
@@ -73,6 +74,7 @@ public class TDGame extends Game {
 	
 	@Override
 	public void dispose () {
+            
 	
 	}
         @Override
