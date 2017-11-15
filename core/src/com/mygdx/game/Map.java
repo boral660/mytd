@@ -21,7 +21,7 @@ public class Map {
      * @param width ширина
      * 
      */
-    Map(String name, int moneyOnStart, int height, int width)
+    Map(String name, int moneyOnStart, int width,int height)
    {
        _name = name;
        _moneyOnStart = moneyOnStart;

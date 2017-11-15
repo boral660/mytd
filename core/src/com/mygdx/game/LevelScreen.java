@@ -24,13 +24,23 @@ Map map;
 OrthographicCamera camera;
 private SpriteBatch batch;
 private Texture gameIm;
+Texture roadIm;
+int stepHeight;
+int stepWidth;
 
 
     public LevelScreen(TDGame aThis, Map aMap) {
        super();
         game=aThis;
         map=aMap;
-
+        batch = new SpriteBatch();
+        gameIm = new Texture("grass.jpg");
+        stepHeight=(Gdx.graphics.getHeight()-map.height()*Cell.Size)/2;
+        if(stepHeight<0)
+            stepHeight=0;
+        stepWidth=(Gdx.graphics.getWidth()-map.width()*Cell.Size)/2;
+          if(stepWidth<0)
+            stepWidth=0;
     }
     
 
@@ -41,11 +51,17 @@ private Texture gameIm;
 
     @Override
     public void render(float f) {
+          roadIm = new Texture(Gdx.files.internal("road.png"));
           Gdx.gl.glClearColor(0, 0, 0.2f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+       batch.begin();
        
-        batch.begin();
-        batch.draw(gameIm, 0, 0);
+       batch.draw(gameIm, stepWidth, stepHeight, map.width()*Cell.Size, map.height()*Cell.Size);
+        for (Cell cell:map._roadCell)
+        {
+            batch.draw(roadIm,  stepWidth+cell.width()*Cell.Size,stepHeight+cell.height()*Cell.Size, Cell.Size,Cell.Size);      
+        }
+        
         
         batch.end();
     }

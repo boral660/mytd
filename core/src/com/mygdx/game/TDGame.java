@@ -29,8 +29,8 @@ public class TDGame extends Game {
 
     public IntroScreen introScreen;
     public MapsScreen mapsScreen;
-    Texture MapIm;
-    Texture RoadIm;
+
+
     ArrayList<Map> mapsList=new ArrayList<Map>();
     
         OrthographicCamera camera;
@@ -43,16 +43,26 @@ public class TDGame extends Game {
 	
 	@Override
 	public void create () {
-          Map TestMap=new Map("Test1", 100,10,10);
+            // Создать первую карту
+          Map TestMap=new Map("Test1", 100,16,8);
+          TestMap._roadCell.add(0,new Cell(0,0));
+          TestMap._roadCell.add(1,new Cell(0,1));
+          TestMap._roadCell.add(2,new Cell(0,2));
+          TestMap._roadCell.add(3,new Cell(1,2));
+          TestMap._roadCell.add(4,new Cell(1,3));
+          TestMap._roadCell.add(5,new Cell(2,3));
+          TestMap._roadCell.add(5,new Cell(3,3));
+          
           mapsList.add(TestMap);
-           TestMap=new Map("Test2", 50,20,20);
+           TestMap=new Map("Test2", 50,16,16);
           mapsList.add(TestMap);
-           TestMap=new Map("Test3", 600,14,20);
+           TestMap=new Map("Test3", 600,16,16);
           mapsList.add(TestMap);
                  introScreen = new IntroScreen(this);
                  mapsScreen = new MapsScreen(this);
+               
             this.setScreen(introScreen);
-
+                
 	}
 
 	@Override

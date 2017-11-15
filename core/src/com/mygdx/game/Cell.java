@@ -11,13 +11,14 @@ package com.mygdx.game;
  */
 public class Cell {
     
+    static int Size=64;
      /**
      * Конструктор - создание новой клетки
      *
      * @param height высота
      * @param width ширина
      */
-    Cell(int height, int width)
+    Cell( int width,int height)
    {
       _height = height;
       _width = width;
