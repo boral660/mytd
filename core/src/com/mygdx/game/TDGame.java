@@ -13,8 +13,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 
@@ -27,10 +29,10 @@ public class TDGame extends Game {
 
     public IntroScreen introScreen;
     public MapsScreen mapsScreen;
-	Texture MapIm;
-        Texture RoadIm;
-         Map TestMap=new Map("Test", 100,10,10);
-         
+    Texture MapIm;
+    Texture RoadIm;
+    ArrayList<Map> mapsList=new ArrayList<Map>();
+    
         OrthographicCamera camera;
         SpriteBatch batch;// это специальный класс, который используется для рисования 2D изображений, 
                           //таких как текстуры, которые мы загрузили
@@ -41,7 +43,12 @@ public class TDGame extends Game {
 	
 	@Override
 	public void create () {
-            
+          Map TestMap=new Map("Test1", 100,10,10);
+          mapsList.add(TestMap);
+           TestMap=new Map("Test2", 50,20,20);
+          mapsList.add(TestMap);
+           TestMap=new Map("Test3", 600,14,20);
+          mapsList.add(TestMap);
                  introScreen = new IntroScreen(this);
                  mapsScreen = new MapsScreen(this);
             this.setScreen(introScreen);

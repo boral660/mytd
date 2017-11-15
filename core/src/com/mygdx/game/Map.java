@@ -15,9 +15,11 @@ public class Map {
     
       /**
      * Конструктор - создание новой карты
-     *
+     * @param name название карты
+     * @param moneyOnStart деньги на старте
      * @param height высота
      * @param width ширина
+     * 
      */
     Map(String name, int moneyOnStart, int height, int width)
    {
