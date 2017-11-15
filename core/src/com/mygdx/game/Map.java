@@ -29,9 +29,14 @@ public class Map {
       _height = height;
       _width = width;
    }
-    
+    /**
+    * Главная конструкиция
+    */
     private MainConstruction _main;
     
+     /**
+    * Главная конструкиция
+    */
     MainConstruction main()
     {
         return _main;
