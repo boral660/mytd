@@ -10,8 +10,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import javafx.scene.paint.Color;
+
 
 /**
  *
@@ -28,12 +34,13 @@ private Texture mainCon;
 private Texture roadIm;
 int stepHeight;
 int stepWidth;
-
+ int currentMoney;
 
     public LevelScreen(TDGame aThis, Map aMap) {
        super();
         game=aThis;
         map=aMap;
+        currentMoney=map.moneyOnStart();
         batch = new SpriteBatch();
         gameIm = new Texture("grass.jpg");
         stepHeight=(Gdx.graphics.getHeight()-map.height()*Cell.Size)/2;
@@ -52,6 +59,9 @@ int stepWidth;
 
     @Override
     public void render(float f) {
+         Stage stage = new Stage();
+         Gdx.input.setInputProcessor(stage);// Make the stage consume event
+         
           roadIm = new Texture(Gdx.files.internal("road.png"));
           mainCon=new Texture(Gdx.files.internal("mainConstuct.png"));
           Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -63,9 +73,16 @@ int stepWidth;
         {
             batch.draw(roadIm,  stepWidth+cell.width()*Cell.Size,stepHeight+cell.height()*Cell.Size, Cell.Size,Cell.Size);      
         }
-        batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size+25, Cell.Size+25);
+        batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size, Cell.Size+15);
+
+       
+         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
+         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 20;
+        BitmapFont fontToGold = generator.generateFont(parameter); 
+        generator.dispose(); 
         
-        
+        fontToGold.draw(batch,"Gold: "+ map.moneyOnStart(),Gdx.graphics.getWidth()*65/80 ,Gdx.graphics.getHeight()-Cell.Size);
         batch.end();
     }
 
