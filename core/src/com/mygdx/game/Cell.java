@@ -50,5 +50,20 @@ public class Cell {
        return _width;
    }
    
+      /**
+     * Проверить, является ли эта эквиалентной
+     * @param other - другая ячейка 
+     * @return true - ячейка является эквиалентной, false -ячейка не является эквиалентной
+     * 
+    */ 
+   @Override
+    public boolean equals(Object obj) { 
+        if (obj instanceof Cell) { 
+               return (_width==((Cell)obj).width() && _height==((Cell)obj).height()); 
+       } 
+    return false;
+
+    }
+    
  
 }

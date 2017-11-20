@@ -87,5 +87,40 @@ public class Map {
     * Клетки с дорогой
     */
    public ArrayList<Cell> _roadCell = new ArrayList();
+ 
+    /**
+     * Проверить, занята ли ячейка
+     * @param position позиция ячейки на карте
+     * @return true - ячейка занята объектом, false -ячейка свободна
+     * 
+    */     
+  public boolean CheckCell(Cell position)
+   {
+       if(_main.position().equals(position))
+           return true;
+       
+       for (DefenseConstruction dc:_defenseConst)
+        {
+            if(dc.position().equals(position))
+                return true;
+        }
+            return false;
+   }
+  
+   /**
+     * Проверить, является ли эта ячейка дорогой
+     * @param position позиция ячейки на карте
+     * @return true - ячейка является дорогой, false -ячейка местоности
+     * 
+    */     
+  public boolean CheckRoad(Cell position)
+   {
+       for (Cell cell:_roadCell)
+        {
+            if(cell.equals(position))
+                return true;
+        }
+       return false;
+    }
 
 }

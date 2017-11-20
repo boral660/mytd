@@ -6,6 +6,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,11 @@ private SpriteBatch batch;
 private Texture gameIm;
 private Texture mainCon;
 private Texture roadIm;
+private Texture squareIm;
+
+
+Cell currentCell=new Cell(0,0);
+
 int stepHeight;
 int stepWidth;
 int currentMoney;
@@ -62,15 +68,14 @@ private Texture defense;
 
     @Override
     public void render(float f) {
-         Stage stage = new Stage();
-         Gdx.input.setInputProcessor(stage);// Make the stage consume event
-         
           roadIm = new Texture(Gdx.files.internal("road.png"));
           mainCon=new Texture(Gdx.files.internal("mainConstuct.png"));
           Gdx.gl.glClearColor(0, 0, 0.2f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        batch.begin();
        
+           MouseProcessor inputProcessor = new MouseProcessor();
+        Gdx.input.setInputProcessor(inputProcessor);
        batch.draw(gameIm, stepWidth, stepHeight, map.width()*Cell.Size, map.height()*Cell.Size);
         for (Cell cell:map._roadCell)
         {
@@ -88,10 +93,11 @@ private Texture defense;
         
         // Отрисовка башен
         renderTower();
+        renderSquare(currentCell);
         batch.end();
     }
 
-    
+    // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
          for (DefenseConstruction constuct:map._defenseConst)
         {
@@ -106,11 +112,25 @@ private Texture defense;
             {
                  defense=new Texture(Gdx.files.internal("LightTower.png"));
             }
-            batch.draw(defense,stepWidth + constuct.position().width()*Cell.Size, stepHeight+constuct.position().height()*Cell.Size,Cell.Size,Cell.Size );      
-       
+            batch.draw(defense,stepWidth + constuct.position().width()*Cell.Size, stepHeight+constuct.position().height()*Cell.Size,Cell.Size,Cell.Size );       
+        }     
+    }
+        // Выделить квадраты
+        public void renderSquare(Cell position) {
+            if(map.CheckCell(position))
+                    squareIm=new Texture(Gdx.files.internal("Red.png"));
+            else
+                   squareIm=new Texture(Gdx.files.internal("Yellow.png"));  
+                batch.draw(squareIm,stepWidth + position.width()*Cell.Size, stepHeight+position.height()*Cell.Size,Cell.Size,Cell.Size );    
+      
+        }
+        // Найти позицию
+        public Cell findCell(int x, int y)
+        {
+            return new Cell((x-stepWidth)/Cell.Size,(y-stepHeight)/Cell.Size);
         }
         
-    }
+        
     @Override
     public void resize(int i, int i1) {
         
@@ -137,6 +157,50 @@ private Texture defense;
         batch.dispose();
         roadIm.dispose();
              defense.dispose();
+    }
+    
+    public class MouseProcessor implements InputProcessor {
+    @Override
+    public boolean keyDown (int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp (int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped (char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown (int x, int y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp (int x, int y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged (int x, int y, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled (int amount) {
+        return false;
+    }
+
+      @Override
+     public boolean mouseMoved(int i, int i1) {
+         
+            currentCell=findCell(i,Gdx.graphics.getHeight()-i1);
+            return true;
+        }
     }
     
 }
