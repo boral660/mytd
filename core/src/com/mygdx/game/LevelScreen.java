@@ -18,6 +18,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.game.enemies.Enemy;
+import com.mygdx.game.enemies.EnemyFactory;
 import javafx.scene.paint.Color;
 
 
@@ -80,11 +82,11 @@ private Texture defense;
         Gdx.input.setInputProcessor(inputProcessor);
 
        batch.draw(gameIm, stepWidth, stepHeight, map.width()*Cell.Size, map.height()*Cell.Size);
-        for (Cell cell:map._roadCell)
+        for (Cell cell:map.roadCell())
         {
             batch.draw(roadIm,  stepWidth+cell.width()*Cell.Size,stepHeight+cell.height()*Cell.Size, Cell.Size,Cell.Size);      
         }
-        batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size, Cell.Size+15);
+        batch.draw(mainCon, stepWidth + map.main().position().width()*Cell.Size, stepHeight+map.main().position().height()*Cell.Size, Cell.Size, Cell.Size);
  
         //Количество золота
          FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
@@ -98,6 +100,9 @@ private Texture defense;
                 // Отрисовка башен
         renderTower();
         renderSquare(currentCell);
+       Enemy enemy=  EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell());
+       
+     
         batch.end();
     }
 //    public void openList()
@@ -117,7 +122,7 @@ private Texture defense;
 //    }
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
-         for (DefenseConstruction constuct:map._defenseConst)
+         for (DefenseConstruction constuct:map.defenseConst())
         {
             if(constuct instanceof ArcherTower)
             {
