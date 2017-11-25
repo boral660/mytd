@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.enemies.EnemyFactory;
+import com.mygdx.game.navigation.Direction;
 import javafx.scene.paint.Color;
 
 
@@ -41,6 +42,10 @@ private Texture squareIm;
 Skin uiSkin;
 Cell currentCell=new Cell(0,0);
 
+  Enemy enemy;
+   Enemy enemy2;
+     Enemy enemy3;
+     
 int stepHeight;
 int stepWidth;
 int currentMoney;
@@ -59,9 +64,10 @@ private Texture defense;
         stepWidth=(Gdx.graphics.getWidth()-map.width()*Cell.Size)/2;
           if(stepWidth<0)
             stepWidth=0;
-          
+       enemy=  EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell());
+       enemy2=  EnemyFactory.getEnemy("SkeletonMage", map.roadCell().get(0), map.roadCell());
+       enemy3=  EnemyFactory.getEnemy("LizardArcher", map.roadCell().get(0), map.roadCell());
     }
-    
 
     @Override
     public void show() {
@@ -100,9 +106,13 @@ private Texture defense;
                 // Отрисовка башен
         renderTower();
         renderSquare(currentCell);
-       Enemy enemy=  EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell());
-       
-     
+       enemy.move();
+        enemy2.move();
+        enemy3.move();
+      
+       batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight+enemy.y(), Cell.Size/2, Cell.Size/2);
+       batch.draw(enemy2.texture(), stepWidth + enemy2.x(), stepHeight+enemy2.y(), Cell.Size/2, Cell.Size/2);
+       batch.draw(enemy3.texture(), stepWidth + enemy3.x(), stepHeight+enemy3.y(), Cell.Size/2, Cell.Size/2);
         batch.end();
     }
 //    public void openList()

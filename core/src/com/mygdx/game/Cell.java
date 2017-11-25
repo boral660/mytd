@@ -11,7 +11,7 @@ package com.mygdx.game;
  */
 public class Cell {
     
-    static int Size=64;
+   public static int Size=64;
      /**
      * Конструктор - создание новой клетки
      *
@@ -37,7 +37,7 @@ public class Cell {
    /**
     * Высота 
     */
-   int height()
+   public int height()
    {
        return _height;
    }
@@ -45,7 +45,7 @@ public class Cell {
    /**
      * Ширина
      */
-   int width()
+   public int width()
    {
        return _width;
    }
