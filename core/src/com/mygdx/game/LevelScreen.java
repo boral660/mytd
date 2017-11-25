@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import javafx.scene.paint.Color;
 
@@ -34,8 +35,8 @@ private Texture gameIm;
 private Texture mainCon;
 private Texture roadIm;
 private Texture squareIm;
-
-
+  Stage stage = new Stage();
+Skin uiSkin;
 Cell currentCell=new Cell(0,0);
 
 int stepHeight;
@@ -56,6 +57,7 @@ private Texture defense;
         stepWidth=(Gdx.graphics.getWidth()-map.width()*Cell.Size)/2;
           if(stepWidth<0)
             stepWidth=0;
+          
     }
     
 
@@ -70,12 +72,13 @@ private Texture defense;
     public void render(float f) {
           roadIm = new Texture(Gdx.files.internal("road.png"));
           mainCon=new Texture(Gdx.files.internal("mainConstuct.png"));
-          Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+          Gdx.gl.glClearColor(0, 0, 0, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        batch.begin();
        
            MouseProcessor inputProcessor = new MouseProcessor();
         Gdx.input.setInputProcessor(inputProcessor);
+
        batch.draw(gameIm, stepWidth, stepHeight, map.width()*Cell.Size, map.height()*Cell.Size);
         for (Cell cell:map._roadCell)
         {
@@ -90,13 +93,28 @@ private Texture defense;
         BitmapFont fontToGold = generator.generateFont(parameter); 
         generator.dispose(); 
         fontToGold.draw(batch,"Gold: "+ currentMoney,Gdx.graphics.getWidth()*65/80 ,Gdx.graphics.getHeight()-Cell.Size);
-        
-        // Отрисовка башен
+           renderSquare(currentCell);
+
+                // Отрисовка башен
         renderTower();
         renderSquare(currentCell);
         batch.end();
     }
-
+//    public void openList()
+//    {
+//        uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+//        
+//         List  list = new List<String>(uiSkin);
+//          String[] strings = new String[2];
+//          strings[0]="Hello";
+//          strings[1]="By";
+//         list.setItems(strings);
+//               list.setX(100);
+//              list.setY(100);
+//        list.draw(batch, 0);
+//        
+//
+//    }
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
          for (DefenseConstruction constuct:map._defenseConst)

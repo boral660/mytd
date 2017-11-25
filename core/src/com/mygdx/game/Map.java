@@ -82,12 +82,20 @@ public class Map {
        /**
     * Клетки башнями
     */
-    public  ArrayList<DefenseConstruction> _defenseConst=new ArrayList();
+    private  ArrayList<DefenseConstruction> _defenseConst=new ArrayList();
+    public ArrayList<DefenseConstruction> defenseConst()
+    {
+       return _defenseConst;
+    }
+    
     /**
     * Клетки с дорогой
     */
-   public ArrayList<Cell> _roadCell = new ArrayList();
- 
+   private ArrayList<Cell> _roadCell = new ArrayList();
+   public ArrayList<Cell> roadCell()
+    {
+       return _roadCell;
+    }
     /**
      * Проверить, занята ли ячейка
      * @param position позиция ячейки на карте
