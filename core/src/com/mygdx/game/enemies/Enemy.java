@@ -6,6 +6,7 @@
 package com.mygdx.game.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Cell;
 import com.mygdx.game.navigation.Direction;
 import com.mygdx.game.navigation.Pair;
@@ -22,7 +23,7 @@ import java.util.Vector;
  */
 public abstract class Enemy {
 
-    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, Texture pict){
+    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict){
        _healPoints=hp;
        _damage=dmg;
        _speed=speed;
@@ -30,6 +31,7 @@ public abstract class Enemy {
        _position=pos;
         _roadCell=road;
         _texture=pict;
+        _direction=Direction.south();
         
         Random rand = new Random();
         int r = rand.nextInt(10) * 20;
@@ -40,11 +42,11 @@ public abstract class Enemy {
       /**
      * Текстура для отрисовки
      */
-    protected Texture _texture;
+    protected TextureRegion  _texture;
       /**
      * Текстура для отрисовки
      */
-    public Texture texture() {
+    public TextureRegion  texture() {
         return _texture;
     }
     protected float _x,_y;
@@ -65,6 +67,7 @@ public abstract class Enemy {
     {
         if(_path.size()>0){
        _direction=_path.get(0).getFirst();
+     
        float countStep=_path.get(0).getSecond() -_speed;
        
       _path.get(0).setSecond(countStep);
@@ -105,6 +108,7 @@ public abstract class Enemy {
         return road;  
     }
     private List<Pair<Direction, Float>> _path;
+    
     
     
     private Direction _direction;

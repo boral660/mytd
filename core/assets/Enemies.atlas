@@ -1,0 +1,75 @@
+
+Enemies.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Balista
+  rotate: false
+  xy: 1, 24
+  size: 36, 39
+  orig: 36, 39
+  offset: 0, 0
+  index: -1
+Ork
+  rotate: false
+  xy: 39, 33
+  size: 37, 30
+  orig: 37, 30
+  offset: 0, 0
+  index: -1
+Viking
+  rotate: false
+  xy: 39, 2
+  size: 33, 29
+  orig: 33, 29
+  offset: 0, 0
+  index: -1
+SkeletonMage
+  rotate: false
+  xy: 74, 1
+  size: 29, 30
+  orig: 29, 30
+  offset: 0, 0
+  index: -1
+Bomber
+  rotate: false
+  xy: 78, 37
+  size: 25, 26
+  orig: 25, 26
+  offset: 0, 0
+  index: -1
+LizardArcher
+  rotate: false
+  xy: 105, 25
+  size: 26, 38
+  orig: 26, 38
+  offset: 0, 0
+  index: -1
+Hunter
+  rotate: false
+  xy: 133, 22
+  size: 22, 41
+  orig: 22, 41
+  offset: 0, 0
+  index: -1
+Slime
+  rotate: false
+  xy: 157, 32
+  size: 24, 31
+  orig: 24, 31
+  offset: 0, 0
+  index: -1
+SkeletonWarrior
+  rotate: false
+  xy: 157, 6
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+Rat
+  rotate: false
+  xy: 183, 23
+  size: 13, 40
+  orig: 13, 40
+  offset: 0, 0
+  index: -1

@@ -81,6 +81,12 @@ public class Direction {
           return Direction.south();
         }    
     }
+    public Direction opposite() { 
+        return new Direction(this._angle+180); 
+    }
+     public boolean isOpposite(Direction other) {
+        return this.opposite().equals(other);
+    }
     
     
 }

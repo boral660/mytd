@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -39,12 +40,14 @@ private Texture mainCon;
 private Texture roadIm;
 private Texture squareIm;
   Stage stage = new Stage();
-Skin uiSkin;
-Cell currentCell=new Cell(0,0);
 
-  Enemy enemy;
-   Enemy enemy2;
-     Enemy enemy3;
+Cell currentCell=new Cell(0,0);
+private Texture  EnemyAtlas;
+ 
+
+Enemy enemy;
+Enemy enemy2;
+ Enemy enemy3;
      
 int stepHeight;
 int stepWidth;
@@ -64,6 +67,7 @@ private Texture defense;
         stepWidth=(Gdx.graphics.getWidth()-map.width()*Cell.Size)/2;
           if(stepWidth<0)
             stepWidth=0;
+     
        enemy=  EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell());
        enemy2=  EnemyFactory.getEnemy("SkeletonMage", map.roadCell().get(0), map.roadCell());
        enemy3=  EnemyFactory.getEnemy("LizardArcher", map.roadCell().get(0), map.roadCell());
@@ -73,7 +77,27 @@ private Texture defense;
     public void show() {
         
     }
-    
+    public void renderEnemy()
+    {
+        enemy.move();
+        float OriginX = Cell.Size/4;
+        float OriginY = Cell.Size/4;
+        if(enemy.direction().equals(Direction.north())){
+               batch.draw(enemy.texture(),stepWidth + enemy.x(), stepHeight+enemy.y(), OriginX, OriginY, Cell.Size/2, Cell.Size/2, 1f, 1f, 180f);
+        }
+        else if(enemy.direction().equals(Direction.east())){
+            batch.draw(enemy.texture(),stepWidth + enemy.x(), stepHeight+enemy.y(), OriginX, OriginY, Cell.Size/2, Cell.Size/2, 1f, 1f, 1f,true);
+        }
+        else if(enemy.direction().equals(Direction.west())){
+            batch.draw(enemy.texture(),stepWidth + enemy.x(), stepHeight+enemy.y(), OriginX, OriginY, Cell.Size/2, Cell.Size/2, 1f, 1f, 1f,false);
+           
+                }
+        else{
+        
+       batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight+enemy.y(), Cell.Size/2, Cell.Size/2);
+
+    }
+    }
         
 
     @Override
@@ -101,35 +125,14 @@ private Texture defense;
         BitmapFont fontToGold = generator.generateFont(parameter); 
         generator.dispose(); 
         fontToGold.draw(batch,"Gold: "+ currentMoney,Gdx.graphics.getWidth()*65/80 ,Gdx.graphics.getHeight()-Cell.Size);
-           renderSquare(currentCell);
 
                 // Отрисовка башен
         renderTower();
-        renderSquare(currentCell);
-       enemy.move();
-        enemy2.move();
-        enemy3.move();
-      
-       batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight+enemy.y(), Cell.Size/2, Cell.Size/2);
-       batch.draw(enemy2.texture(), stepWidth + enemy2.x(), stepHeight+enemy2.y(), Cell.Size/2, Cell.Size/2);
-       batch.draw(enemy3.texture(), stepWidth + enemy3.x(), stepHeight+enemy3.y(), Cell.Size/2, Cell.Size/2);
+        renderSquare();
+        renderEnemy();
         batch.end();
     }
-//    public void openList()
-//    {
-//        uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
-//        
-//         List  list = new List<String>(uiSkin);
-//          String[] strings = new String[2];
-//          strings[0]="Hello";
-//          strings[1]="By";
-//         list.setItems(strings);
-//               list.setX(100);
-//              list.setY(100);
-//        list.draw(batch, 0);
-//        
-//
-//    }
+
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
          for (DefenseConstruction constuct:map.defenseConst())
@@ -149,12 +152,12 @@ private Texture defense;
         }     
     }
         // Выделить квадраты
-        public void renderSquare(Cell position) {
-            if(map.CheckCell(position))
+        public void renderSquare() {
+            if(map.CheckCell(currentCell))
                     squareIm=new Texture(Gdx.files.internal("Red.png"));
             else
                    squareIm=new Texture(Gdx.files.internal("Yellow.png"));  
-                batch.draw(squareIm,stepWidth + position.width()*Cell.Size, stepHeight+position.height()*Cell.Size,Cell.Size,Cell.Size );    
+                batch.draw(squareIm,stepWidth + currentCell.width()*Cell.Size, stepHeight+currentCell.height()*Cell.Size,Cell.Size,Cell.Size );    
       
         }
         // Найти позицию
