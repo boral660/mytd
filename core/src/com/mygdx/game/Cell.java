@@ -15,39 +15,39 @@ public class Cell {
      /**
      * Конструктор - создание новой клетки
      *
-     * @param height высота
-     * @param width ширина
+     * @param x высота
+     * @param y ширина
      */
-    Cell( int width,int height)
+  public  Cell( int x,int y)
    {
-      _height = height;
-      _width = width;
+      _y = y;
+      _x = x;
    }
     
     /**
     * Высота 
     */
-   private int _height;
+   private int _y;
    
     /**
      * Ширина
      */
-   private int _width;
+   private int _x;
    
    /**
     * Высота 
     */
-   public int height()
+   public int y()
    {
-       return _height;
+       return _y;
    }
    
    /**
-     * Ширина
+     * Позиция по ширине
      */
-   public int width()
+   public int x()
    {
-       return _width;
+       return _x;
    }
    
       /**
@@ -59,7 +59,7 @@ public class Cell {
    @Override
     public boolean equals(Object obj) { 
         if (obj instanceof Cell) { 
-               return (_width==((Cell)obj).width() && _height==((Cell)obj).height()); 
+               return (_x==((Cell)obj).x() && _y==((Cell)obj).y()); 
        } 
     return false;
 

@@ -23,17 +23,15 @@ public class MainConstruction {
       
       _position = position;
       _integrity = integrity;
+      _maxIntegrity=integrity;
    }
+    
+    
      /**
     * Позиция здания
     */
    private Cell _position;
-    
-     /**
-    * Прочность
-    */
-     private int _integrity;
-    
+
       /**
     * Позиция здания
     */
@@ -41,9 +39,27 @@ public class MainConstruction {
    {
        return _position;
    }
-   
+      /**
+    * Максимальная прочность
+    */
+     private int _maxIntegrity;
+    
     /**
-    * Прочность
+    * Максимальная прочность
+    */
+   int maxIntegrity()
+   {
+       return _maxIntegrity;
+   }
+   
+     
+     /**
+    * Текущая прочность
+    */
+     private int _integrity;
+    
+    /**
+    * Текущая прочность
     */
    int integrity()
    {

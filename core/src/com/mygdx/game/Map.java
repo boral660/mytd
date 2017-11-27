@@ -5,6 +5,9 @@
  */
 package com.mygdx.game;
 
+import com.mygdx.game.enemies.Enemy;
+import com.mygdx.game.enemies.EnemyFactory;
+import com.mygdx.game.enemies.Wave;
 import java.util.ArrayList;
 
 /**
@@ -96,6 +99,19 @@ public class Map {
     {
        return _roadCell;
     }
+   
+     /**
+    * Волны с врагами 
+    */
+    private ArrayList<Wave> _waves = new ArrayList();
+    
+      public ArrayList<Wave> waves()
+    {
+        return _waves;
+    }
+      
+    
+      
     /**
      * Проверить, занята ли ячейка
      * @param position позиция ячейки на карте
@@ -130,5 +146,45 @@ public class Map {
         }
        return false;
     }
+  /**
+     * Заполнение карты по первому шаблону
+     * 
+    */     
+   static public Map GenerateMap1()
+    {
+         MainConstruction main=new MainConstruction(new Cell(8,5),250);
+            // Создать первую карту
+          Map map=new Map("Long-long way", 100,16,8,main);
+          map.roadCell().add(new Cell(0,0));
+          map.roadCell().add(new Cell(1,0));
+          map.roadCell().add(new Cell(2,0));
+          map.roadCell().add(new Cell(2,1));
+          map.roadCell().add(new Cell(2,2));
+          map.roadCell().add(new Cell(3,2));
+          map.roadCell().add(new Cell(4,2));
+          map.roadCell().add(new Cell(5,2));
+          map.roadCell().add(new Cell(6,2));
+          map.roadCell().add(new Cell(7,2));
+          map.roadCell().add(new Cell(8,2));
+          map.roadCell().add(new Cell(8,3));
+          map.roadCell().add(new Cell(8,4));
+          // Создаём первую волну
+         ArrayList<Enemy> enemies=new ArrayList<Enemy>();
+         enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+         map.waves().add(new Wave(enemies,map.roadCell()));
+         // Cоздаём вторую волну
+         enemies=new ArrayList<Enemy>();
+         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell()));
+        map.waves().add(new Wave(enemies,map.roadCell()));
+        
+        return map;
+    }
+   
+   
 
 }

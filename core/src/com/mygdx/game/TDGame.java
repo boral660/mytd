@@ -43,23 +43,10 @@ public class TDGame extends Game {
 	
 	@Override
 	public void create () {
-          MainConstruction main=new MainConstruction(new Cell(2,2),250);
+            
             // Создать первую карту
-          Map TestMap=new Map("Test1", 100,16,8,main);
-          TestMap.roadCell().add(0,new Cell(0,0));
-          TestMap.roadCell().add(1,new Cell(1,0));
-          TestMap.roadCell().add(2,new Cell(2,0));
-          TestMap.roadCell().add(3,new Cell(2,1));
+          mapsList.add(Map.GenerateMap1());
           
-          TestMap.defenseConst().add(new ArcherTower(new Cell(0,1)));
-          TestMap.defenseConst().add(new IceTower(new Cell(3,2)));
-          TestMap.defenseConst().add(new LightTower(new Cell(1,2)));
-   
-          mapsList.add(TestMap);
-           TestMap=new Map("Test2", 50,16,16,main);
-          mapsList.add(TestMap);
-           TestMap=new Map("Test3", 600,16,16,main);
-          mapsList.add(TestMap);
                  introScreen = new IntroScreen(this);
                  mapsScreen = new MapsScreen(this);
                

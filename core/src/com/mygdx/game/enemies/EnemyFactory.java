@@ -6,7 +6,6 @@
 package com.mygdx.game.enemies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.mygdx.game.Cell;
 import java.util.ArrayList;
@@ -20,35 +19,35 @@ public class EnemyFactory {
     public static Enemy getEnemy(String Type,Cell pos, ArrayList<Cell> road){
         // Ближний бой
        if(Type.equals("SkeletonWarrior")) {
-           return new Melee(pos,road,5,5,1f,10,EnemyAtlas.findRegion("SkeletonWarrior") );
+           return new Melee(pos,road,5,5,1.2f,10,EnemyAtlas.findRegion("SkeletonWarrior") );
        }
        else if(Type.equals("Viking")) {
-           return new Melee(pos,road,10,7,0.5f,15,EnemyAtlas.findRegion("Viking"));
+           return new Melee(pos,road,10,30,0.8f,15,EnemyAtlas.findRegion("Viking"));
        }
         else if(Type.equals("Ork")) {
-           return new Melee(pos,road,7,10,0.7f,15,EnemyAtlas.findRegion("Ork"));
+           return new Melee(pos,road,7,10,1.4f,15,EnemyAtlas.findRegion("Ork"));
        }
         else if(Type.equals("Rat")) {
-           return new Melee(pos,road,2,3,2f,10,EnemyAtlas.findRegion("Rat"));
+           return new Melee(pos,road,2,5,1.7f,10,EnemyAtlas.findRegion("Rat"));
        }
         else if(Type.equals("Slime")) {
-           return new Melee(pos,road,2,20,0.3f,30,EnemyAtlas.findRegion("Slime"));
+           return new Melee(pos,road,2,50,0.9f,30,EnemyAtlas.findRegion("Slime"));
        }
         //Дальний бой
        else if(Type.equals("SkeletonMage")) {
-           return new Range(pos,road,5,5,1f,15,EnemyAtlas.findRegion("SkeletonMage"),1);
+           return new Range(pos,road,5,5,1.2f,15,EnemyAtlas.findRegion("SkeletonMage"),1);
        }
        else if(Type.equals("LizardArcher")) {
-           return new Range(pos,road,10,7,1.2f,20,EnemyAtlas.findRegion("LizardArcher"),2);
+           return new Range(pos,road,10,7,1.3f,20,EnemyAtlas.findRegion("LizardArcher"),2);
        }
        else if(Type.equals("Hunter")) {
-           return new Range(pos,road,7,5,2f,30,EnemyAtlas.findRegion("Hunter"),3);
+           return new Range(pos,road,7,5,1.5f,30,EnemyAtlas.findRegion("Hunter"),3);
        }
-       else if(Type.equals("Bomer")) {
-           return new Range(pos,road,15,2,0.8f,20,EnemyAtlas.findRegion("Bomer"),1);
+       else if(Type.equals("Bomber")) {
+           return new Range(pos,road,15,2,1.0f,20,EnemyAtlas.findRegion("Bomber"),1);
        }
        else if(Type.equals("Balista")) {
-           return new Range(pos,road,25,10,0.5f,35,EnemyAtlas.findRegion("Balista"),3);
+           return new Range(pos,road,25,50,1.1f,35,EnemyAtlas.findRegion("Balista"),4);
        }
        return null;
     

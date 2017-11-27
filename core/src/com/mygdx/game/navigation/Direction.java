@@ -64,15 +64,15 @@ public class Direction {
     */    
    static public Direction defineDirect(Cell first,Cell nextCell)
     {
-        if(first.width()<nextCell.width())
+        if(first.x()<nextCell.x())
         {
             return Direction.west();
                 }
-        else if(first.width()>nextCell.width())
+        else if(first.x()>nextCell.x())
         {
               return Direction.east();
         }
-        else if(first.height()<nextCell.height())
+        else if(first.y()<nextCell.y())
         {
           return Direction.north();
         }

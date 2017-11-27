@@ -4,17 +4,13 @@
  * and open the template in the editor.
  */
 package com.mygdx.game.enemies;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Cell;
 import com.mygdx.game.navigation.Direction;
 import com.mygdx.game.navigation.Pair;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Враги
@@ -34,9 +30,9 @@ public abstract class Enemy {
         _direction=Direction.south();
         
         Random rand = new Random();
-        int r = rand.nextInt(10) * 20;
-        _x=rand.nextInt(32);
-        _y=rand.nextInt(32);
+        
+        _x= rand.nextInt(32);
+        _y=  rand.nextInt(32);
         _path=createRoad();
     }
       /**
@@ -56,7 +52,30 @@ public abstract class Enemy {
      public float y(){
             return _y;
     }
-     
+       /**
+     * Проверить может ли враг атаковать цель
+     * @param target клетка, которую должен атакавать
+     * @return false - если не может, true если может
+     * 
+    */  
+    public boolean canAttack(Cell target)
+    {
+       return (_position.x()<=target.x()+1+1*_rangeAttack && _position.y()==target.y())      // Цель слева от врага
+              ||(_position.x()>=target.x()-1-1*_rangeAttack && _position.y()==target.y())      // Цель справа от врага
+              ||(_position.y()>=target.y()+1+1*_rangeAttack && _position.x()==target.x())     // Цель снизу от врага
+              ||(_position.y()>=target.y()-1-1*_rangeAttack && _position.x()==target.x());     // Цель сверху от врага
+    }
+     /**
+     *  Атаковать цель
+     * @param target клетка, которую должен атакавать
+     * 
+    */  
+    public void attack(Cell target)
+    {
+           _direction= Direction.defineDirect(_position,target);
+    }
+    
+    
       /**
      * Двигаться по направлению
      * @param direct направление
@@ -80,15 +99,19 @@ public abstract class Enemy {
        
         if(_direction.equals(Direction.north())){
             _y+=countStep;
+            if(countStep==0) _position=new Cell(_position.x(),_position.y()+1);
         }
         else if(_direction.equals(Direction.south())){
             _y-=countStep;
+             if(countStep==0) _position=new Cell(_position.x(),_position.y()-1);
         }
         else if(_direction.equals(Direction.west())){
             _x+=countStep;
+             if(countStep==0) _position=new Cell(_position.x()+1,_position.y());
         }
         else if(_direction.equals(Direction.south())){
             _x-=countStep;
+            if(countStep==0) _position=new Cell(_position.x()-1,_position.y());
         }
         }
     }
