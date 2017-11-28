@@ -111,6 +111,7 @@ public class Map {
     }
       
     
+    
       
     /**
      * Проверить, занята ли ячейка
@@ -152,7 +153,7 @@ public class Map {
     */     
    static public Map GenerateMap1()
     {
-         MainConstruction main=new MainConstruction(new Cell(8,5),250);
+         MainConstruction main=new MainConstruction(new Cell(8,5),150);
             // Создать первую карту
           Map map=new Map("Long-long way", 100,16,8,main);
           map.roadCell().add(new Cell(0,0));

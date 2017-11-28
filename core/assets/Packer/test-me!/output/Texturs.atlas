@@ -1,74 +1,95 @@
 
-Enemies.png
+Texturs.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+MagicBall
+  rotate: false
+  xy: 1, 8
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+Hit
+  rotate: false
+  xy: 58, 16
+  size: 57, 47
+  orig: 57, 47
+  offset: 0, 0
+  index: -1
+MetallicBall
+  rotate: false
+  xy: 117, 16
+  size: 48, 47
+  orig: 48, 47
+  offset: 0, 0
+  index: -1
 Balista
   rotate: false
-  xy: 1, 24
+  xy: 167, 24
   size: 36, 39
   orig: 36, 39
   offset: 0, 0
   index: -1
 Ork
   rotate: false
-  xy: 39, 33
+  xy: 205, 33
   size: 37, 30
   orig: 37, 30
   offset: 0, 0
   index: -1
 SkeletonMage
   rotate: false
-  xy: 39, 1
+  xy: 205, 1
   size: 29, 30
   orig: 29, 30
   offset: 0, 0
   index: -1
 Viking
   rotate: false
-  xy: 78, 34
+  xy: 244, 34
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 LizardArcher
   rotate: false
-  xy: 113, 25
+  xy: 279, 25
   size: 26, 38
   orig: 26, 38
   offset: 0, 0
   index: -1
 Hunter
   rotate: false
-  xy: 141, 22
+  xy: 307, 22
   size: 22, 41
   orig: 22, 41
   offset: 0, 0
   index: -1
 Slime
   rotate: false
-  xy: 165, 32
+  xy: 331, 32
   size: 24, 31
   orig: 24, 31
   offset: 0, 0
   index: -1
 SkeletonWarrior
   rotate: false
-  xy: 191, 39
+  xy: 357, 39
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 Bomber
   rotate: false
-  xy: 217, 40
+  xy: 383, 40
   size: 24, 23
   orig: 24, 23
   offset: 0, 0
   index: -1
 Rat
   rotate: false
-  xy: 243, 50
+  xy: 58, 1
   size: 12, 13
   orig: 12, 13
   offset: 0, 0

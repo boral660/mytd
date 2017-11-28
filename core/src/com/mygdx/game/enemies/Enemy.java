@@ -5,7 +5,9 @@
  */
 package com.mygdx.game.enemies;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Cell;
+import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.navigation.Direction;
 import com.mygdx.game.navigation.Pair;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.Random;
  */
 public abstract class Enemy {
 
-    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict){
+    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict,TextureRegion  pictForBullet ){
        _healPoints=hp;
        _damage=dmg;
        _speed=speed;
@@ -27,6 +29,7 @@ public abstract class Enemy {
        _position=pos;
         _roadCell=road;
         _texture=pict;
+        _textureForBullet=pictForBullet;
         _direction=Direction.south();
         
         Random rand = new Random();
@@ -45,6 +48,31 @@ public abstract class Enemy {
     public TextureRegion  texture() {
         return _texture;
     }
+
+      /**
+     * Время последней атаки
+     */
+    protected long  _lastAttackTime;
+      /**
+     * Время последней атаки
+     */
+    public long lastAttackTime() {
+        return _lastAttackTime;
+    }
+    
+      /**
+     * Текстура для снаряда
+     */
+    protected TextureRegion  _textureForBullet;
+      /**
+     * Текстура для отрисовки
+     */
+    public TextureRegion  textureForBullet() {
+        return _textureForBullet;
+    }
+     /**
+     * Координаты врага
+     */
     protected float _x,_y;
     public float x(){
             return _x;
@@ -70,10 +98,27 @@ public abstract class Enemy {
      * @param target клетка, которую должен атакавать
      * 
     */  
-    public void attack(Cell target)
+    public Bullet attack(Cell target,float x, float y)
     {
-           _direction= Direction.defineDirect(_position,target);
+        
+        _direction= Direction.defineDirect(_position,target);
+        if(_lastAttackTime==0 || (TimeUtils.millis() - _lastAttackTime > 1500))
+        {
+           _lastAttackTime=TimeUtils.millis();
+           
+         if(_textureForBullet!=null)
+         {      TextureRegion temp=new TextureRegion();
+         temp.setRegion(_textureForBullet);
+            return new Bullet(_x, _y, x, y,_damage, temp);
+         }
+         return null;
+        }
+        else
+            return null;
+            
     }
+    
+
     
     
       /**

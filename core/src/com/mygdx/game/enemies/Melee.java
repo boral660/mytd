@@ -16,8 +16,8 @@ import java.util.ArrayList;
  */
 public class Melee extends Enemy{
        
-   public Melee(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict){
-       super(pos,road,hp,dmg,speed,moneyForKill,pict);
+   public Melee(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict,TextureRegion  pictForBullet){
+       super(pos,road,hp,dmg,speed,moneyForKill,pict,pictForBullet);
          _rangeAttack=0;
     }
     

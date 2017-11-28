@@ -18,20 +18,6 @@ import java.util.ArrayList;
  * @author PK
  */
 public class DCFactory {
-    private static TextureAtlas  EnemyAtlas= new TextureAtlas(Gdx.files.internal("Enemies.atlas"));
-    public static Enemy getEnemy(String Type,Cell pos, ArrayList<Cell> road){
-        // Ближний бой
-       if(Type.equals("ArcherTower")) {
-           return new Melee(pos,road,5,5,1f,10,EnemyAtlas.findRegion("SkeletonWarrior") );
-       }
-       else if(Type.equals("LightTower")) {
-           return new Melee(pos,road,10,7,0.5f,15,EnemyAtlas.findRegion("Viking"));
-       }
-       else if(Type.equals("IceTower")) {
-           return new Melee(pos,road,10,7,0.5f,15,EnemyAtlas.findRegion("Viking"));
-       }
-     
-       return null;
-    
-    }
+
+  
 }

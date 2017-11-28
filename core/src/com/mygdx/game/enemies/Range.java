@@ -16,8 +16,8 @@ import java.util.ArrayList;
  */
 public  class Range extends Enemy{
        
-   public Range(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict, int range){
-       super(pos,road,hp,dmg,speed,moneyForKill,pict);
+   public Range(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict, int range,TextureRegion  pictForBullet){
+       super(pos,road,hp,dmg,speed,moneyForKill,pict,pictForBullet);
          _rangeAttack=range;
     }
 }

@@ -51,7 +51,7 @@ class MapsScreen implements Screen {
     public void render(float f) {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);// Make the stage consume event
-        createBasicSkin();
+        buttonsSkin=game.createBasicSkin();
         if(currentMap==null)
             currentMap=game.mapsList.get(0);
         
@@ -153,28 +153,6 @@ class MapsScreen implements Screen {
         gameIm.dispose();
         batch.dispose();
     }
-
-   private void createBasicSkin(){
-  //Create a font
-  BitmapFont font = new BitmapFont();
-  buttonsSkin.add("default", font);
- 
-  //Create a texture
-  Pixmap pixmap = new Pixmap((int)Gdx.graphics.getWidth()/4,(int)Gdx.graphics.getHeight()/12, Pixmap.Format.RGB888);
-  pixmap.setColor(Color.WHITE);
-  pixmap.fill();
-  buttonsSkin.add("background",new Texture(pixmap));
- 
-  //Create a button style
-  TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-  textButtonStyle.up = buttonsSkin.newDrawable("background", Color.GRAY);
-  textButtonStyle.down = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
-  textButtonStyle.checked = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
-  textButtonStyle.over = buttonsSkin.newDrawable("background", Color.LIGHT_GRAY);
-  textButtonStyle.font = buttonsSkin.getFont("default");
-  buttonsSkin.add("default", textButtonStyle);
- 
-    } 
 
     // 0 - previous, 1 - next
     int changeMapsOnList(String name, int direction) {
