@@ -170,9 +170,9 @@ public class Map {
           map.roadCell().add(new Cell(8,3));
           map.roadCell().add(new Cell(8,4));
           // Создаём башни
-          map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(7,3)));
-           map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
-           map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
+       //   map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(7,3)));
+       //    map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
+       //    map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
           
           // Создаём первую волну
          ArrayList<Enemy> enemies=new ArrayList<Enemy>();

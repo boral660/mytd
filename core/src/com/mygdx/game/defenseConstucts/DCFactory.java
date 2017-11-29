@@ -18,13 +18,13 @@ public class DCFactory {
     public static Tower getTower(String Type,Cell pos){
         // Башни
        if(Type.equals("ArcherTower")) {
-           return new Tower(pos,5,35,1, Atlas.findRegion("Bomber"),Atlas.findRegion("MetallicBall"), 3);
+           return new Tower(pos,5,35,1, Atlas.findRegion("ArcherTower"),Atlas.findRegion("MetallicBall"), 3);
        }
         else if(Type.equals("IceTower")) {
-           return new Tower(pos,15,50,2f, Atlas.findRegion("Hunter"),Atlas.findRegion("MagicBall"), 4);
+           return new Tower(pos,15,50,2f, Atlas.findRegion("IceTower"),Atlas.findRegion("MagicBall"), 4);
        }
        else if(Type.equals("LightTower")) {
-           return new Tower(pos,1,35,0.3f, Atlas.findRegion("Balista"),Atlas.findRegion("Hit"), 2);
+           return new Tower(pos,1,35,0.3f, Atlas.findRegion("LightTower"),Atlas.findRegion("Hit"), 2);
        }
         return null;
     }

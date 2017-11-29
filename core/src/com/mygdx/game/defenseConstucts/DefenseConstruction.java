@@ -95,7 +95,7 @@ public abstract class DefenseConstruction {
              
               if(_rangeAttack==0)  return new Bullet(x, y, x, y,_damage, temp); // Создать пулю у цели
                   
-            return new Bullet(_position.x()*Cell.Size,_position.y()*Cell.Size, target,_damage, temp);
+            return new Bullet(_position.x()*Cell.Size+Cell.Size/2,_position.y()*Cell.Size+Cell.Size/2, target,_damage, temp);
          }
          return null;
         }

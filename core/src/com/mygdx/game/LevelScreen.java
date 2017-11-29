@@ -7,6 +7,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -48,11 +49,14 @@ class LevelScreen implements Screen {
     private Texture roadIm;
     private Texture squareIm;
     private Texture defense;
+    private Texture Panel;
     private Cell currentCell = new Cell(0, 0);
     private Wave currentWave;
+    private int numberWave;
     private int currentMoney;
     private Stage stage;
 private ScrollPane scrollPane;
+private boolean Win=false;
        private List list ;
 
     
@@ -78,10 +82,17 @@ private ScrollPane scrollPane;
         stage = new Stage();
         currentMoney = map.moneyOnStart();
         batch = new SpriteBatch();
-        gameIm = new Texture("grass.jpg");
+        gameIm = new Texture(Gdx.files.internal("grass.jpg"));
         roadIm = new Texture(Gdx.files.internal("road.png"));
         mainCon = new Texture(Gdx.files.internal("mainConstuct.png"));
-        currentWave = map.waves().get(1);
+        Panel = new Texture(Gdx.files.internal("Panel.png"));
+        currentWave = null;
+        numberWave=0;
+            MouseProcessor inputProcessor = new MouseProcessor();
+            InputMultiplexer multiplexer = new InputMultiplexer();
+            Gdx.input.setInputProcessor(multiplexer);
+            multiplexer.addProcessor(inputProcessor);
+            multiplexer.addProcessor(stage);
 
     }
 
@@ -144,6 +155,7 @@ private ScrollPane scrollPane;
             Enemy enemy = iter.next();
 
             if (enemy.healPoints()==0) { 
+                currentMoney+=enemy.moneyForKill();
                  iter.remove();
             }
         }
@@ -158,11 +170,20 @@ private ScrollPane scrollPane;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(gameIm,0, 0, map.width() * Cell.Size, map.height() * Cell.Size);
-        if (map.main().integrity() > 0) {
-
-            MouseProcessor inputProcessor = new MouseProcessor();
-            Gdx.input.setInputProcessor(inputProcessor);
-
+        batch.draw(Panel,0, 512);
+        createStartButton();
+        
+           if (map.main().integrity() <= 0) {
+                    renderNode("You lose the game!:c" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+                    currentWave=null;
+               }
+     
+            if(currentWave!=null && currentWave.enemies().size()==0)
+            {
+                 EndWave();
+            }
+        
+        
             for (Cell cell : map.roadCell()) {
                 batch.draw(roadIm, cell.x() * Cell.Size,  cell.y() * Cell.Size, Cell.Size, Cell.Size);
             }
@@ -173,7 +194,10 @@ private ScrollPane scrollPane;
             renderSquare();
             if (currentWave != null) {
                 renderEnemy();
+                 //Количество врагов
+                renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
             }
+          
             if (_bullets.size() != 0) {
                 renderBullits();
             }
@@ -181,12 +205,15 @@ private ScrollPane scrollPane;
             //Прочность главного строения
             renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(),  map.main().position().x() * Cell.Size,  map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
             //Количество золота
-            renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight() - Cell.Size, 20);
-
-        } else {
-            Gdx.input.setInputProcessor(stage);
-            createButtons();
-        }
+            renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight()-20, 20);
+            //Количество волн
+            renderNode("Wave " + (numberWave+1) + "/" + map.waves().size(), Gdx.graphics.getWidth() * 1 / 16, Gdx.graphics.getHeight()-20, 20);
+            
+            if(Win && map.main().integrity() > 0)
+                renderNode("You win the game!" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+               
+         
+        
         batch.end();
         stage.act();
         stage.draw();
@@ -208,11 +235,7 @@ private ScrollPane scrollPane;
         stage.addActor(scrollPane);
                  
     }
-    Object[] listEntries = {"This is a list entry1", "And another one1", "The meaning of life1", "Is hard to come by1",
-		"This is a list entry2", "And another one2", "The meaning of life2", "Is hard to come by2", "This is a list entry3",
-		"And another one3", "The meaning of life3", "Is hard to come by3", "This is a list entry4", "And another one4",
-		"The meaning of life4", "Is hard to come by4", "This is a list entry5", "And another one5", "The meaning of life5",
-		"Is hard to come by5"};
+    Object[] listEntries = {"ArcherTower", "IceTower","LightTower"};
     
     // Отрисовка надписей
     public void renderNode(String str, float x, float y, int size) {
@@ -223,6 +246,32 @@ private ScrollPane scrollPane;
         node.draw(batch, str, x, y);
         generator.dispose();
 
+    }
+ 
+    // Конец волны
+    public void EndWave() {  
+         currentWave=null;
+         if( numberWave+1!=map.waves().size())
+            numberWave++;
+         else
+              Win=true;
+    }
+    // Создание кнопки для переключения волны 
+    public void createStartButton() {  
+        Skin buttonsSkin = game.createBasicSkin();
+        TextButton start = new TextButton("Start wave", buttonsSkin); // Use the initialized skin
+        start.setBounds(0, 0, 150,  30);
+        start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight()-40);
+        start.setTouchable(Touchable.enabled);
+        stage.addActor(start);
+
+        start.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+                 currentWave=map.waves().get(numberWave);
+                return true;
+            }
+        });
     }
 
     public void createButtons() {
@@ -249,6 +298,7 @@ private ScrollPane scrollPane;
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
           for (DefenseConstruction dc : map.defenseConst()) {
+              if(currentWave!=null){
                for (Enemy enemy : currentWave.enemies()) {
                   if (dc.canAttack(enemy)) {
                 Bullet temp = dc.attack(enemy);
@@ -257,7 +307,7 @@ private ScrollPane scrollPane;
                 }
                   }
                }
-               
+              }
                 batch.draw(dc.texture(),  dc.position().x()*Cell.Size, dc.position().y()*Cell.Size, Cell.Size, Cell.Size);
             }
     
@@ -269,13 +319,14 @@ private ScrollPane scrollPane;
 
     // Выделить квадраты
     public void renderSquare() {
+        if(Gdx.graphics.getHeight()- currentCell.y()* Cell.Size>50){
         if (map.CheckCell(currentCell)) {
             squareIm = new Texture(Gdx.files.internal("Red.png"));
         } else {
             squareIm = new Texture(Gdx.files.internal("Yellow.png"));
         }
         batch.draw(squareIm,  currentCell.x() * Cell.Size,  currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
-
+        }
     }
     // Найти позицию
 
@@ -332,16 +383,17 @@ private ScrollPane scrollPane;
 
         @Override
         public boolean touchDown(int x, int y, int pointer, int button) {
+            if(y>50 ){
                  if (button == Buttons.LEFT) {
-                     if(  scrollPane!=null) scrollPane.remove();
+                     if(  scrollPane!=null) scrollPane.remove();{
                  createList(x,  Gdx.graphics.getHeight()-y);
-                  Gdx.input.setInputProcessor(stage);
+                 }
                 return true;     
                 }
                  if (button == Buttons.RIGHT) {
                      scrollPane.remove();
                 return true;     
-                }
+                }}
             return false;
    }
         

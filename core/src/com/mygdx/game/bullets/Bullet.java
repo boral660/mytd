@@ -61,7 +61,7 @@ public class Bullet {
        float speed =3;
 
     float x;
-    
+    if(_x!=_destx && _y<_desty){
       if(_x<_destx){
            if(_x+speed<_destx)
                x=_x+speed;
@@ -81,7 +81,7 @@ public class Bullet {
         _y=(x-_x)*(_desty-_y)/(_destx-_x)+_y;
 
         _x=x;
-               
+    }          
     }
      /**
         * Урон от снаряда

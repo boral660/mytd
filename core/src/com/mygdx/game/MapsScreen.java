@@ -122,7 +122,7 @@ class MapsScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(gameIm, 0, 0);
+        batch.draw(gameIm, 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         stage.act();
         stage.draw();
