@@ -6,6 +6,7 @@
 package com.mygdx.game.bullets;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.enemies.Enemy;
 
 /**
  * Снаряд
@@ -21,7 +22,19 @@ public class Bullet {
         _damage=dmg;
         _texture=new TextureRegion();
         _texture.setRegion(pict);
+        _toEnemy=false;
         
+    }
+    
+     public Bullet(float x, float y, Enemy target,int dmg, TextureRegion  pict)
+    {
+        _x=x;
+        _y=y;
+        _target=target;
+        _damage=dmg;
+        _texture=new TextureRegion();
+        _texture.setRegion(pict);
+        _toEnemy=true;
     }
     /**
       * Проверка, полёт закончен
@@ -29,39 +42,45 @@ public class Bullet {
     public boolean moveOff(){
             return _x==_destx &&_y==_desty;
     }
+      /**
+      * Проверка, что пуля летит во врага
+     */
+    public boolean toEnemy(){
+            return _toEnemy;
+    }
+    boolean _toEnemy;
      /**
       * Пролететь к цели
      */
     public void move(){
+        if(_target!=null)
+        {
+            _destx=_target.x();
+            _desty=_target.y();
+        }
        float speed =3;
-       
-       if(_x<_destx){
+
+    float x;
+    
+      if(_x<_destx){
            if(_x+speed<_destx)
-               _x+=speed;
+               x=_x+speed;
            else
-               _x=_destx;
+               x=_destx;
        }
        else if(_x>_destx)
        {
            if(_destx+speed<_x)
-               _x-=speed;
+               x=_x-speed;
            else
-               _x=_destx;
+               x=_destx;
        }
-      if(_y<_desty){
-           if(_y+speed<_desty)
-               _y+=speed;
-           else
-               _y=_desty;
-       }
-      else if(_y>_desty)
-       {
-           if(_desty+speed<_y)
-               _y-=speed;
-           else
-               _y=_desty;
-       }
+       else 
+           x=_destx;
+      
+        _y=(x-_x)*(_desty-_y)/(_destx-_x)+_y;
 
+        _x=x;
                
     }
      /**
@@ -76,13 +95,20 @@ public class Bullet {
  */
    private TextureRegion  _texture;
     
-    public TextureRegion texture(){
-        if(_texture==null){
-            int i=2;
-        }
-        
+    public TextureRegion texture(){      
        return _texture;
     }
+    
+    /**
+ * Цель для выстрела
+ */
+ private Enemy _target;
+
+   public Enemy target(){
+            return _target;
+    }
+ 
+     
   /**
  * Координаты снаряда
  */

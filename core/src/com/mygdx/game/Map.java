@@ -5,11 +5,13 @@
  */
 package com.mygdx.game;
 
+import com.mygdx.game.defenseConstucts.DCFactory;
 import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.enemies.EnemyFactory;
 import com.mygdx.game.enemies.Wave;
 import java.util.ArrayList;
-
+import com.mygdx.game.navigation.Cell;
+import com.mygdx.game.defenseConstucts.DefenseConstruction;
 /**
  * Игровая карта
  * @author PK
@@ -20,17 +22,15 @@ public class Map {
      * Конструктор - создание новой карты
      * @param name название карты
      * @param moneyOnStart деньги на старте
-     * @param height высота
-     * @param width ширина
      * 
      */
-    Map(String name, int moneyOnStart, int width,int height,MainConstruction main)
+    Map(String name, int moneyOnStart,MainConstruction main)
    {
        _main=main;
        _name = name;
        _moneyOnStart = moneyOnStart;
-      _height = height;
-      _width = width;
+      _height = 8;
+      _width = 16;
    }
     /**
     * Главная конструкиция
@@ -155,7 +155,7 @@ public class Map {
     {
          MainConstruction main=new MainConstruction(new Cell(8,5),150);
             // Создать первую карту
-          Map map=new Map("Long-long way", 100,16,8,main);
+          Map map=new Map("Long-long way", 100,main);
           map.roadCell().add(new Cell(0,0));
           map.roadCell().add(new Cell(1,0));
           map.roadCell().add(new Cell(2,0));
@@ -169,6 +169,11 @@ public class Map {
           map.roadCell().add(new Cell(8,2));
           map.roadCell().add(new Cell(8,3));
           map.roadCell().add(new Cell(8,4));
+          // Создаём башни
+          map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(7,3)));
+           map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
+           map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
+          
           // Создаём первую волну
          ArrayList<Enemy> enemies=new ArrayList<Enemy>();
          enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));

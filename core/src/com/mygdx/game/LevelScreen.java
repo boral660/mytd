@@ -17,27 +17,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.enemies.Wave;
 import com.mygdx.game.navigation.Direction;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import com.mygdx.game.navigation.Cell;
+import com.mygdx.game.defenseConstucts.DefenseConstruction;
 /**
  *
  * @author PK
@@ -55,8 +50,6 @@ class LevelScreen implements Screen {
     private Texture defense;
     private Cell currentCell = new Cell(0, 0);
     private Wave currentWave;
-    private int stepHeight;
-    private int stepWidth;
     private int currentMoney;
     private Stage stage;
 private ScrollPane scrollPane;
@@ -73,14 +66,9 @@ private ScrollPane scrollPane;
         super();
         restart(aThis, aMap);
 
-        stepHeight = (Gdx.graphics.getHeight() - map.height() * Cell.Size) / 2;
-        if (stepHeight < 0) {
-            stepHeight = 0;
-        }
-        stepWidth = (Gdx.graphics.getWidth() - map.width() * Cell.Size) / 2;
-        if (stepWidth < 0) {
-            stepWidth = 0;
-        }
+    
+      //   MouseProcessor inputProcessor = new MouseProcessor();
+        //    Gdx.input.setInputProcessor(inputProcessor);
 
     }
 
@@ -105,27 +93,24 @@ private ScrollPane scrollPane;
     public void renderBullits() {
 
         for (Bullet bullet : _bullets) {
-
             bullet.move();
-            if (bullet.texture() == null) {
-                int i = 0;
-            }
-            batch.draw(
-                    bullet.texture(),
-                    stepWidth + bullet.x(),
-                    stepHeight + bullet.y(),
-                    Cell.Size / 4,
-                    Cell.Size / 4);
+            batch.draw( bullet.texture(), bullet.x(),bullet.y(),Cell.Size / 4, Cell.Size / 4);
         }
         Iterator<Bullet> iter = _bullets.iterator();
+        
         while (iter.hasNext()) {
 
             Bullet bullet = iter.next();
 
             if (bullet.moveOff()) {
+                if(bullet.toEnemy())
+                {
+                    bullet.target().reduseHP(bullet.damage());
+                }
+                else{
                 map.main().DecriseIntegrity(bullet.damage());
-                iter.remove();
-
+                }
+                 iter.remove();
             }
         }
 
@@ -134,7 +119,7 @@ private ScrollPane scrollPane;
     public void renderEnemy() {
         for (Enemy enemy : currentWave.enemies()) {
             if (enemy.canAttack(map.main().position())) {
-                Bullet temp = enemy.attack(map.main().position(), stepWidth + map.main().position().x() * Cell.Size + 32, stepHeight + map.main().position().y() * Cell.Size - 32);
+                Bullet temp = enemy.attack(map.main().position(), map.main().position().x() * Cell.Size + 32,  map.main().position().y() * Cell.Size - 32);
                 if (temp != null) {
                     _bullets.add(temp);
                 }
@@ -142,17 +127,27 @@ private ScrollPane scrollPane;
                 enemy.move();
             }
             if (enemy.direction().equals(Direction.north())) {
-                batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight + enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 180f);
+                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 180f);
             } else if (enemy.direction().equals(Direction.east())) {
-                batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight + enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, true);
+                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, true);
             } else if (enemy.direction().equals(Direction.west())) {
-                batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight + enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, false);
+                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, false);
 
             } else {
-                batch.draw(enemy.texture(), stepWidth + enemy.x(), stepHeight + enemy.y(), Cell.Size / 4, Cell.Size / 4);
+                batch.draw(enemy.texture(),  enemy.x(),  enemy.y(), Cell.Size / 4, Cell.Size / 4);
             }
 
         }
+         Iterator<Enemy> iter = currentWave.enemies().iterator();
+        while (iter.hasNext()) {
+
+            Enemy enemy = iter.next();
+
+            if (enemy.healPoints()==0) { 
+                 iter.remove();
+            }
+        }
+        
 
     }
 
@@ -162,16 +157,16 @@ private ScrollPane scrollPane;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(gameIm, stepWidth, stepHeight, map.width() * Cell.Size, map.height() * Cell.Size);
+        batch.draw(gameIm,0, 0, map.width() * Cell.Size, map.height() * Cell.Size);
         if (map.main().integrity() > 0) {
 
             MouseProcessor inputProcessor = new MouseProcessor();
             Gdx.input.setInputProcessor(inputProcessor);
 
             for (Cell cell : map.roadCell()) {
-                batch.draw(roadIm, stepWidth + cell.x() * Cell.Size, stepHeight + cell.y() * Cell.Size, Cell.Size, Cell.Size);
+                batch.draw(roadIm, cell.x() * Cell.Size,  cell.y() * Cell.Size, Cell.Size, Cell.Size);
             }
-            batch.draw(mainCon, stepWidth + map.main().position().x() * Cell.Size - 16, stepHeight + map.main().position().y() * Cell.Size - 16, Cell.Size * 1.5f, Cell.Size * 1.5f);
+            batch.draw(mainCon,  map.main().position().x() * Cell.Size - 16,  map.main().position().y() * Cell.Size - 16, Cell.Size * 1.5f, Cell.Size * 1.5f);
 
             // Отрисовка башен
             renderTower();
@@ -184,11 +179,12 @@ private ScrollPane scrollPane;
             }
 
             //Прочность главного строения
-            renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(), stepWidth + map.main().position().x() * Cell.Size, stepHeight + map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
+            renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(),  map.main().position().x() * Cell.Size,  map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
             //Количество золота
             renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight() - Cell.Size, 20);
 
         } else {
+            Gdx.input.setInputProcessor(stage);
             createButtons();
         }
         batch.end();
@@ -236,7 +232,7 @@ private ScrollPane scrollPane;
 
         TextButton exit = new TextButton("Change Map", buttonsSkin); // Use the initialized skin
         exit.setBounds(0, 0, Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 16);
-        exit.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 16, stepHeight + Gdx.graphics.getHeight() / 2);
+        exit.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 16, Gdx.graphics.getHeight() / 2);
         exit.setTouchable(Touchable.enabled);
         stage.addActor(exit);
 
@@ -252,32 +248,39 @@ private ScrollPane scrollPane;
 
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
-        for (DefenseConstruction constuct : map.defenseConst()) {
-            if (constuct instanceof ArcherTower) {
-                defense = new Texture(Gdx.files.internal("ArcherTower.png"));
-            } else if (constuct instanceof IceTower) {
-                defense = new Texture(Gdx.files.internal("IceTower.png"));
-            } else if (constuct instanceof LightTower) {
-                defense = new Texture(Gdx.files.internal("LightTower.png"));
+          for (DefenseConstruction dc : map.defenseConst()) {
+               for (Enemy enemy : currentWave.enemies()) {
+                  if (dc.canAttack(enemy)) {
+                Bullet temp = dc.attack(enemy);
+               if (temp != null) {
+                    _bullets.add(temp);
+                }
+                  }
+               }
+               
+                batch.draw(dc.texture(),  dc.position().x()*Cell.Size, dc.position().y()*Cell.Size, Cell.Size, Cell.Size);
             }
-            batch.draw(defense, stepWidth + constuct.position().x() * Cell.Size, stepHeight + constuct.position().y() * Cell.Size, Cell.Size, Cell.Size);
-        }
-    }
-    // Выделить квадраты
+    
 
+        }
+
+     
+    
+
+    // Выделить квадраты
     public void renderSquare() {
         if (map.CheckCell(currentCell)) {
             squareIm = new Texture(Gdx.files.internal("Red.png"));
         } else {
             squareIm = new Texture(Gdx.files.internal("Yellow.png"));
         }
-        batch.draw(squareIm, stepWidth + currentCell.x() * Cell.Size, stepHeight + currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
+        batch.draw(squareIm,  currentCell.x() * Cell.Size,  currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
 
     }
     // Найти позицию
 
     public Cell findCell(int x, int y) {
-        return new Cell((x - stepWidth) / Cell.Size, (y - stepHeight) / Cell.Size);
+        return new Cell(x  / Cell.Size, y  / Cell.Size);
     }
 
     @Override
@@ -332,6 +335,7 @@ private ScrollPane scrollPane;
                  if (button == Buttons.LEFT) {
                      if(  scrollPane!=null) scrollPane.remove();
                  createList(x,  Gdx.graphics.getHeight()-y);
+                  Gdx.input.setInputProcessor(stage);
                 return true;     
                 }
                  if (button == Buttons.RIGHT) {

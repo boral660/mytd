@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package com.mygdx.game;
-
+import com.mygdx.game.navigation.Cell;
 /**
  *  Главное здание
  * @author PK
@@ -69,15 +69,15 @@ public class MainConstruction {
    /**
      * Уменьшить прочность здания
      *
-     * @param count количество прочности, на которое уменьшаем
+     * @param value количество прочности, на которое уменьшаем
      */
-   void DecriseIntegrity(int count)
+   void DecriseIntegrity(int value)
    {
 
-       if(_integrity-count<=0)
+       if(_integrity-value<=0)
            _integrity=0;
        else
-           _integrity=_integrity-count;
+           _integrity=_integrity-value;
    }
     
 }

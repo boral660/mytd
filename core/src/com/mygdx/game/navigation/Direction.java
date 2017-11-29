@@ -5,7 +5,7 @@
  */
 package com.mygdx.game.navigation;
 
-import com.mygdx.game.Cell;
+import com.mygdx.game.navigation.Cell;
 
 /**
     /*

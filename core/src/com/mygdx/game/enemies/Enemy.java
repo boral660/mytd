@@ -6,7 +6,7 @@
 package com.mygdx.game.enemies;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mygdx.game.Cell;
+import com.mygdx.game.navigation.Cell;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.navigation.Direction;
 import com.mygdx.game.navigation.Pair;
@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public abstract class Enemy {
 
-    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict,TextureRegion  pictForBullet ){
+    public Enemy(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill,float atkSpeed, TextureRegion  pict,TextureRegion  pictForBullet ){
        _healPoints=hp;
        _damage=dmg;
        _speed=speed;
@@ -31,13 +31,25 @@ public abstract class Enemy {
         _texture=pict;
         _textureForBullet=pictForBullet;
         _direction=Direction.south();
-        
+        _attackSpeed=atkSpeed;
         Random rand = new Random();
         
-        _x= rand.nextInt(32);
-        _y=  rand.nextInt(32);
+        _x=pos.x()*Cell.Size+ rand.nextInt(32);
+        _y= pos.y()*Cell.Size+ rand.nextInt(32);
         _path=createRoad();
     }
+    
+    /**
+     * Скорость атаки
+     */
+    protected float  _attackSpeed;
+      /**
+     * Скорость атаки
+     */
+    public float  attackSpeed() {
+        return _attackSpeed;
+    } 
+    
       /**
      * Текстура для отрисовки
      */
@@ -47,6 +59,15 @@ public abstract class Enemy {
      */
     public TextureRegion  texture() {
         return _texture;
+    }  
+    /**
+     * Текстура для отрисовки
+     */
+    public void  reduseHP(int value) {
+        if(_healPoints-value<=0)
+           _healPoints=0;
+       else
+           _healPoints=_healPoints-value;
     }
 
       /**
@@ -102,13 +123,17 @@ public abstract class Enemy {
     {
         
         _direction= Direction.defineDirect(_position,target);
-        if(_lastAttackTime==0 || (TimeUtils.millis() - _lastAttackTime > 1500))
+        if(_lastAttackTime==0 || (TimeUtils.millis() - _lastAttackTime > _attackSpeed*1000))
         {
+           
            _lastAttackTime=TimeUtils.millis();
            
          if(_textureForBullet!=null)
          {      TextureRegion temp=new TextureRegion();
-         temp.setRegion(_textureForBullet);
+             temp.setRegion(_textureForBullet);
+             
+              if(_rangeAttack==0)  return new Bullet(x, y, x, y,_damage, temp); // Создать пулю у цели
+                  
             return new Bullet(_x, _y, x, y,_damage, temp);
          }
          return null;

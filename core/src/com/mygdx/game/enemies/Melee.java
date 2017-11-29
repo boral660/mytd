@@ -7,7 +7,7 @@ package com.mygdx.game.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.Cell;
+import com.mygdx.game.navigation.Cell;
 import java.util.ArrayList;
 
 /**
@@ -16,8 +16,8 @@ import java.util.ArrayList;
  */
 public class Melee extends Enemy{
        
-   public Melee(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill, TextureRegion  pict,TextureRegion  pictForBullet){
-       super(pos,road,hp,dmg,speed,moneyForKill,pict,pictForBullet);
+   public Melee(Cell pos, ArrayList<Cell> road,int hp,int dmg,float speed, int moneyForKill,float atkSpeed, TextureRegion  pict,TextureRegion  pictForBullet){
+       super(pos,road,hp,dmg,speed,moneyForKill,atkSpeed,pict,pictForBullet);
          _rangeAttack=0;
     }
     

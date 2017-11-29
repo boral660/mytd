@@ -7,17 +7,26 @@ package com.mygdx.game.defenseConstucts;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.mygdx.game.Cell;
-import com.mygdx.game.enemies.Enemy;
-import com.mygdx.game.enemies.Melee;
-import com.mygdx.game.enemies.Range;
-import java.util.ArrayList;
+import com.mygdx.game.navigation.Cell;
 
 /**
  *
- * @author PK
+ * @author PK 
  */
 public class DCFactory {
-
+ private static TextureAtlas  Atlas= new TextureAtlas(Gdx.files.internal("Texturs.atlas"));
+    public static Tower getTower(String Type,Cell pos){
+        // Башни
+       if(Type.equals("ArcherTower")) {
+           return new Tower(pos,5,35,1, Atlas.findRegion("Bomber"),Atlas.findRegion("MetallicBall"), 3);
+       }
+        else if(Type.equals("IceTower")) {
+           return new Tower(pos,15,50,2f, Atlas.findRegion("Hunter"),Atlas.findRegion("MagicBall"), 4);
+       }
+       else if(Type.equals("LightTower")) {
+           return new Tower(pos,1,35,0.3f, Atlas.findRegion("Balista"),Atlas.findRegion("Hit"), 2);
+       }
+        return null;
+    }
   
 }
