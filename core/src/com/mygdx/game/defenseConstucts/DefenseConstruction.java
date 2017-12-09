@@ -18,7 +18,7 @@ import com.mygdx.game.navigation.Direction;
  */
 public abstract class DefenseConstruction {
     
-     public DefenseConstruction(Cell pos,int dmg,int price,float atkSpeed,TextureRegion  pict, TextureRegion  pictForBullet){
+     public DefenseConstruction(Cell pos,int dmg,int price,float atkSpeed,TextureRegion  pict, TextureRegion  pictForBullet, String Name){
 
        _damage=dmg;
        _position=pos;
@@ -27,12 +27,28 @@ public abstract class DefenseConstruction {
         _texture=pict;
         _textureForBullet=pictForBullet;
         _destroy=false;
-
+        _name=Name;
     }
+        /**
+     * Название башни
+     */
+    protected String _name;
+    
+     /**
+     * Название башни
+     */
+     @Override
+    public String toString() {
+        return _name;
+    }
+
+    
+    
       /**
      * Радиус атаки
      */
     protected int _rangeAttack;
+    
    
     /**
      * Сооружение разрушено
@@ -152,7 +168,7 @@ public abstract class DefenseConstruction {
     /**
     * Урон
     */
-     int damage()
+   public  int damage()
    {
        return _damage;
    }
@@ -164,7 +180,7 @@ public abstract class DefenseConstruction {
      /**
     * Цена
     */
-     int _price()
+  public   int price()
    {
        return _price;
    }

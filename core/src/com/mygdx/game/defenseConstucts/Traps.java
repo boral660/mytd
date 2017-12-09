@@ -16,8 +16,8 @@ import com.mygdx.game.navigation.Cell;
  */
 public class Traps extends DefenseConstruction {
     
-     public Traps(Cell pos,int dmg,int price,float atkSpeed, TextureRegion  pict, TextureRegion  pictForBullet){
-       super(pos,dmg,price,atkSpeed,pict,pictForBullet);
+     public Traps(Cell pos,int dmg,int price,float atkSpeed, TextureRegion  pict, TextureRegion  pictForBullet,String Name){
+       super(pos,dmg,price,atkSpeed,pict,pictForBullet, Name);
         _rangeAttack=0;
      }
        /**

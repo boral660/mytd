@@ -14,8 +14,8 @@ import com.mygdx.game.navigation.Cell;
  */
 public class Tower extends DefenseConstruction {
     
-     public Tower(Cell pos,int dmg,int price,float atkSpeed, TextureRegion  pict, TextureRegion  pictForBullet, int range){
-       super(pos,dmg,price,atkSpeed,pict,pictForBullet);
+     public Tower(Cell pos,int dmg,int price,float atkSpeed, TextureRegion  pict, TextureRegion  pictForBullet, int range,String Name){
+       super(pos,dmg,price,atkSpeed,pict,pictForBullet,Name);
        _rangeAttack=range;
      }
        /**
