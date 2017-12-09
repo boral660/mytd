@@ -244,7 +244,13 @@ class LevelScreen implements Screen {
     public void show() {   
        
     }
+   
     public void createList(float x, float y) {
+        if(Gdx.graphics.getHeight()-y<150)
+            y-=150;
+        if(Gdx.graphics.getWidth()-x<200)
+            x-=200;
+        
         list = new List(skin);
         if(map.CheckCell(currentCell))
         { 
@@ -267,7 +273,8 @@ class LevelScreen implements Screen {
         list.getSelection().setToggle(true);
         scrollPane = new ScrollPane(list, skin);
         scrollPane.setFlickScroll(false);
-
+        scrollPane.setHeight(150);
+        scrollPane.setWidth(200);
         scrollPane.setX(x);
         scrollPane.setY(y);
         stage.addActor(scrollPane);
@@ -288,32 +295,34 @@ class LevelScreen implements Screen {
     scrollPane.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-             
-              if(list.getSelected()==null ||  list.getSelected().toString().compareTo("Destroy tower")==0)
+             Object obj=list.getSelected();
+             if(obj==null)
+                 obj=list.getItems().first();
+              if(obj.toString().compareTo("Destroy tower")==0)
             {
                        destroyTower();
             }
-             else if(list.getSelected().toString().compareTo("IceTower")==0 )
+             else if(obj.toString().compareTo("IceTower")==0 )
              {
                  buyTower(DCFactory.getTower("IceTower",currentCell ));
              }
-                else if(list.getSelected().toString().compareTo("ArcherTower")==0 )
+                else if(obj.toString().compareTo("ArcherTower")==0 )
              {
                  buyTower(DCFactory.getTower("ArcherTower",currentCell ));
              }
-                else if(list.getSelected().toString().compareTo("LightTower")==0 )
+                else if(obj.toString().compareTo("LightTower")==0 )
              {
                  buyTower(DCFactory.getTower("LightTower",currentCell ));
              }
-                else if(list.getSelected().toString().compareTo("Wire")==0 )
+                else if(obj.toString().compareTo("Wire")==0 )
              {
                  buyTower(DCFactory.getTower("Wire",currentCell ));
              }
-                else if(list.getSelected().toString().compareTo("ElectricBomb")==0 )
+                else if(obj.toString().compareTo("ElectricBomb")==0 )
              {
                  buyTower(DCFactory.getTower("ElectricBomb",currentCell ));
              }
-                 else if(list.getSelected().toString().compareTo("Spike")==0 )
+                 else if(obj.toString().compareTo("Spike")==0 )
              {
                  buyTower(DCFactory.getTower("Spike",currentCell ));
              }
@@ -324,8 +333,8 @@ class LevelScreen implements Screen {
 
     }
     Object[] ListTowers = {DCFactory.getTower("ArcherTower",currentCell ), DCFactory.getTower("IceTower",currentCell ), DCFactory.getTower("LightTower",currentCell )};
-    Object[] ListTraps = {DCFactory.getTower("Wire",currentCell ),DCFactory.getTower("ElectricBomb",currentCell ),DCFactory.getTower("Spike",currentCell )};
-    Object[] ListActions = {"Destroy tower" };
+    Object[] ListTraps = {DCFactory.getTower("Wire",currentCell ),DCFactory.getTower("ElectricBomb",currentCell ),DCFactory.getTower("Spike",currentCell ),};
+    Object[] ListActions = {"Destroy construction" };
      //купить башню
     public void buyTower(DefenseConstruction dc) {
         if(canBuyTower(dc)){
@@ -360,9 +369,12 @@ class LevelScreen implements Screen {
         currentWave = null;
         if (numberWave + 1 != map.waves().size()) {
             numberWave++;
+
+
         } else {
             Win = true;
         }
+        
     }
 
 
@@ -373,6 +385,7 @@ class LevelScreen implements Screen {
         start.setBounds(0, 0, 150, 30);
         start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight() - 40);
         start.setTouchable(Touchable.enabled);
+      
         stage.addActor(start);
 
         start.addListener(new ClickListener() {
@@ -505,10 +518,11 @@ class LevelScreen implements Screen {
                     if (scrollPane != null) {
                         scrollPane.remove();
                     }
-                   
+                    if(!map.main().position().equals(currentCell))
+                    {
                         createList(x, Gdx.graphics.getHeight() - y);
                           Gdx.input.setInputProcessor(stage);
-                    
+                    }
                     return true;
                 }
                 if (button == Buttons.RIGHT) {

@@ -93,7 +93,7 @@ public class TDGame extends Game {
   TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
   textButtonStyle.up = buttonsSkin.newDrawable("background", Color.GRAY);
   textButtonStyle.down = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
-  textButtonStyle.checked = buttonsSkin.newDrawable("background", Color.DARK_GRAY);
+  textButtonStyle.checked = buttonsSkin.newDrawable("background", Color.GRAY);
   textButtonStyle.over = buttonsSkin.newDrawable("background", Color.LIGHT_GRAY);
   textButtonStyle.font = buttonsSkin.getFont("default");
   buttonsSkin.add("default", textButtonStyle);
