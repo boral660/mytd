@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import com.mygdx.game.navigation.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
+
 /**
  *
  * @author PK
@@ -55,12 +56,16 @@ class LevelScreen implements Screen {
     private int numberWave;
     private int currentMoney;
     private Stage stage;
-private ScrollPane scrollPane;
-private boolean Win=false;
-       private List list ;
+    private ScrollPane scrollPane;
+    private boolean Win = false;
+    private List list;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontParameter parameter;
+    BitmapFont node15=null;
+    BitmapFont node20=null;
+    TextButton start;
 
-    
- private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     /**
      * Снаряды
      */
@@ -69,10 +74,6 @@ private boolean Win=false;
     public LevelScreen(TDGame aThis, Map aMap) {
         super();
         restart(aThis, aMap);
-
-    
-      //   MouseProcessor inputProcessor = new MouseProcessor();
-        //    Gdx.input.setInputProcessor(inputProcessor);
 
     }
 
@@ -87,41 +88,52 @@ private boolean Win=false;
         mainCon = new Texture(Gdx.files.internal("mainConstuct.png"));
         Panel = new Texture(Gdx.files.internal("Panel.png"));
         currentWave = null;
-        numberWave=0;
-            MouseProcessor inputProcessor = new MouseProcessor();
-            InputMultiplexer multiplexer = new InputMultiplexer();
-            Gdx.input.setInputProcessor(multiplexer);
-            multiplexer.addProcessor(inputProcessor);
-            multiplexer.addProcessor(stage);
+        numberWave = 0;
+        MouseProcessor inputProcessor = new MouseProcessor();
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(inputProcessor);
+        multiplexer.addProcessor(stage);
+        createStartButton();
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
+        parameter = new FreeTypeFontParameter();
+            parameter.size = 15;
+            node15 = generator.generateFont(parameter);
+               parameter.size = 20;
+            node20 = generator.generateFont(parameter);
+    }
+
+    // Отрисовка надписей
+    public void renderNode(String str, float x, float y,int size) {
+        if(size==15)
+             node15.draw(batch, str, x, y);
+        if(size==20)
+        node20.draw(batch, str, x, y);
 
     }
 
-    @Override
-    public void show() {
-
-    }
+   
 
     public void renderBullits() {
 
         for (Bullet bullet : _bullets) {
             bullet.move();
-            batch.draw( bullet.texture(), bullet.x(),bullet.y(),Cell.Size / 4, Cell.Size / 4);
+            batch.draw(bullet.texture(), bullet.x(), bullet.y(), Cell.Size / 4, Cell.Size / 4);
         }
         Iterator<Bullet> iter = _bullets.iterator();
-        
+
         while (iter.hasNext()) {
 
             Bullet bullet = iter.next();
 
             if (bullet.moveOff()) {
-                if(bullet.toEnemy())
-                {
+                if (bullet.toEnemy()) {
                     bullet.target().reduseHP(bullet.damage());
+                } else {
+                    map.main().DecriseIntegrity(bullet.damage());
                 }
-                else{
-                map.main().DecriseIntegrity(bullet.damage());
-                }
-                 iter.remove();
+                iter.remove();
             }
         }
 
@@ -130,7 +142,7 @@ private boolean Win=false;
     public void renderEnemy() {
         for (Enemy enemy : currentWave.enemies()) {
             if (enemy.canAttack(map.main().position())) {
-                Bullet temp = enemy.attack(map.main().position(), map.main().position().x() * Cell.Size + 32,  map.main().position().y() * Cell.Size - 32);
+                Bullet temp = enemy.attack(map.main().position(), map.main().position().x() * Cell.Size + 32, map.main().position().y() * Cell.Size - 32);
                 if (temp != null) {
                     _bullets.add(temp);
                 }
@@ -145,21 +157,20 @@ private boolean Win=false;
                 batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, false);
 
             } else {
-                batch.draw(enemy.texture(),  enemy.x(),  enemy.y(), Cell.Size / 4, Cell.Size / 4);
+                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4);
             }
 
         }
-         Iterator<Enemy> iter = currentWave.enemies().iterator();
+        Iterator<Enemy> iter = currentWave.enemies().iterator();
         while (iter.hasNext()) {
 
             Enemy enemy = iter.next();
 
-            if (enemy.healPoints()==0) { 
-                currentMoney+=enemy.moneyForKill();
-                 iter.remove();
+            if (enemy.healPoints() == 0) {
+                currentMoney += enemy.moneyForKill();
+                iter.remove();
             }
         }
-        
 
     }
 
@@ -169,106 +180,100 @@ private boolean Win=false;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(gameIm,0, 0, map.width() * Cell.Size, map.height() * Cell.Size);
-        batch.draw(Panel,0, 512);
-        createStartButton();
-        
-           if (map.main().integrity() <= 0) {
-                    renderNode("You lose the game!:c" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
-                    currentWave=null;
-               }
-     
-            if(currentWave!=null && currentWave.enemies().size()==0)
-            {
-                 EndWave();
-            }
-        
-        
-            for (Cell cell : map.roadCell()) {
-                batch.draw(roadIm, cell.x() * Cell.Size,  cell.y() * Cell.Size, Cell.Size, Cell.Size);
-            }
-            batch.draw(mainCon,  map.main().position().x() * Cell.Size - 16,  map.main().position().y() * Cell.Size - 16, Cell.Size * 1.5f, Cell.Size * 1.5f);
+        batch.draw(gameIm, 0, 0, map.width() * Cell.Size, map.height() * Cell.Size);
+        batch.draw(Panel, 0, 512);
 
-            // Отрисовка башен
-            renderTower();
-            renderSquare();
-            if (currentWave != null) {
-                renderEnemy();
-                 //Количество врагов
-                renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
-            }
-          
-            if (_bullets.size() != 0) {
-                renderBullits();
-            }
+        if (map.main().integrity() <= 0) {
+            renderNode("You lose the game!:c" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+            currentWave = null;
+        }
 
-            //Прочность главного строения
-            renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(),  map.main().position().x() * Cell.Size,  map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
-            //Количество золота
-            renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight()-20, 20);
-            //Количество волн
-            renderNode("Wave " + (numberWave+1) + "/" + map.waves().size(), Gdx.graphics.getWidth() * 1 / 16, Gdx.graphics.getHeight()-20, 20);
-            
-            if(Win && map.main().integrity() > 0)
-                renderNode("You win the game!" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
-               
-         
+        if (currentWave != null && currentWave.enemies().isEmpty()) {
+            EndWave();
+        }
+
+        for (Cell cell : map.roadCell()) {
+            batch.draw(roadIm, cell.x() * Cell.Size, cell.y() * Cell.Size, Cell.Size, Cell.Size);
+        }
+        batch.draw(mainCon, map.main().position().x() * Cell.Size - 16, map.main().position().y() * Cell.Size - 16, Cell.Size * 1.5f, Cell.Size * 1.5f);
+
+        // Отрисовка башен
+        renderTower();
+        renderSquare();
+        if (currentWave != null) {
+            renderEnemy();
+            //Количество врагов
+             renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+
+        }
+
+        if (_bullets.size() != 0) {
+            renderBullits();
+        }
+
+        //Прочность главного строения
+        renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(), map.main().position().x() * Cell.Size, map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
+        //Количество золота
+        renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight()-20, 20);
+        //Количество волн
+         renderNode("Wave " + (numberWave+1) + "/" + map.waves().size(), Gdx.graphics.getWidth() * 1 / 16, Gdx.graphics.getHeight()-20, 20);
+
+        if (Win && map.main().integrity() > 0)
+        renderNode("You win the game!" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+       
         
+       
         batch.end();
         stage.act();
         stage.draw();
+        System.gc();
 
     }
-    public void createList(float x, float y)
-    {
-      list = new List(skin);
-	   
-     	list.setItems(listEntries);
-		list.getSelection().setMultiple(false);
-		list.getSelection().setRequired(false);
-		 list.getSelection().setToggle(true);
-                 scrollPane = new ScrollPane(list, skin);
-		scrollPane.setFlickScroll(false);
-                    
-                 scrollPane.setX(x);
-                 scrollPane.setY(y);
+ @Override
+    public void show() {   
+        Gdx.input.setInputProcessor(stage);
+    }
+    public void createList(float x, float y) {
+        list = new List(skin);
+
+        list.setItems(listEntries);
+        list.getSelection().setMultiple(false);
+        list.getSelection().setRequired(false);
+        list.getSelection().setToggle(true);
+        scrollPane = new ScrollPane(list, skin);
+        scrollPane.setFlickScroll(false);
+
+        scrollPane.setX(x);
+        scrollPane.setY(y);
         stage.addActor(scrollPane);
-                 
-    }
-    Object[] listEntries = {"ArcherTower", "IceTower","LightTower"};
-    
-    // Отрисовка надписей
-    public void renderNode(String str, float x, float y, int size) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = size;
-        BitmapFont node = generator.generateFont(parameter);
-        node.draw(batch, str, x, y);
-        generator.dispose();
 
     }
- 
+    Object[] listEntries = {"ArcherTower", "IceTower", "LightTower"};
+
     // Конец волны
-    public void EndWave() {  
-         currentWave=null;
-         if( numberWave+1!=map.waves().size())
+    public void EndWave() {
+        currentWave = null;
+        if (numberWave + 1 != map.waves().size()) {
             numberWave++;
-         else
-              Win=true;
+        } else {
+            Win = true;
+        }
     }
+
     // Создание кнопки для переключения волны 
-    public void createStartButton() {  
+    public void createStartButton() {
         Skin buttonsSkin = game.createBasicSkin();
-        TextButton start = new TextButton("Start wave", buttonsSkin); // Use the initialized skin
-        start.setBounds(0, 0, 150,  30);
-        start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight()-40);
+        start = new TextButton("Start wave", buttonsSkin); // Use the initialized skin
+        start.setBounds(0, 0, 150, 30);
+        start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight() - 40);
         start.setTouchable(Touchable.enabled);
         stage.addActor(start);
 
         start.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                 currentWave=map.waves().get(numberWave);
+                currentWave = map.waves().get(numberWave);
+                
                 return true;
             }
         });
@@ -297,41 +302,47 @@ private boolean Win=false;
 
     // Сделать так, что бы сначала отрисовывались нижние
     public void renderTower() {
-          for (DefenseConstruction dc : map.defenseConst()) {
-              if(currentWave!=null){
-               for (Enemy enemy : currentWave.enemies()) {
-                  if (dc.canAttack(enemy)) {
-                Bullet temp = dc.attack(enemy);
-               if (temp != null) {
-                    _bullets.add(temp);
+        for (DefenseConstruction dc : map.defenseConst()) {
+            if (currentWave != null) {
+                for (Enemy enemy : currentWave.enemies()) {
+                    if (dc.canAttack(enemy)) {
+                        Bullet temp = dc.attack(enemy);
+                        if (temp != null) {
+                            _bullets.add(temp);
+                        }
+                    }
                 }
-                  }
-               }
-              }
-                batch.draw(dc.texture(),  dc.position().x()*Cell.Size, dc.position().y()*Cell.Size, Cell.Size, Cell.Size);
             }
-    
+            batch.draw(dc.texture(), dc.position().x() * Cell.Size, dc.position().y() * Cell.Size, Cell.Size, Cell.Size);
+        }
+         Iterator<DefenseConstruction> iter =  map.defenseConst().iterator();
+        while (iter.hasNext()) {
 
+            DefenseConstruction td = iter.next();
+
+            if (td.IsDestroy()) {
+                iter.remove();
+            }
         }
 
-     
+    }
     
 
     // Выделить квадраты
     public void renderSquare() {
-        if(Gdx.graphics.getHeight()- currentCell.y()* Cell.Size>50){
-        if (map.CheckCell(currentCell)) {
-            squareIm = new Texture(Gdx.files.internal("Red.png"));
-        } else {
-            squareIm = new Texture(Gdx.files.internal("Yellow.png"));
-        }
-        batch.draw(squareIm,  currentCell.x() * Cell.Size,  currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
+        if (Gdx.graphics.getHeight() - currentCell.y() * Cell.Size > 50) {
+            if (map.CheckCell(currentCell)) {
+                squareIm = new Texture(Gdx.files.internal("Red.png"));
+            } else {
+                squareIm = new Texture(Gdx.files.internal("Yellow.png"));
+            }
+            batch.draw(squareIm, currentCell.x() * Cell.Size, currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
         }
     }
     // Найти позицию
 
     public Cell findCell(int x, int y) {
-        return new Cell(x  / Cell.Size, y  / Cell.Size);
+        return new Cell(x / Cell.Size, y / Cell.Size);
     }
 
     @Override
@@ -383,20 +394,25 @@ private boolean Win=false;
 
         @Override
         public boolean touchDown(int x, int y, int pointer, int button) {
-            if(y>50 ){
-                 if (button == Buttons.LEFT) {
-                     if(  scrollPane!=null) scrollPane.remove();{
-                 createList(x,  Gdx.graphics.getHeight()-y);
-                 }
-                return true;     
+            if (y > 50) {
+                if (button == Buttons.LEFT) {
+                    if (scrollPane != null) {
+                        scrollPane.remove();
+                    }
+                    {
+                        createList(x, Gdx.graphics.getHeight() - y);
+                    }
+                    return true;
                 }
-                 if (button == Buttons.RIGHT) {
-                     scrollPane.remove();
-                return true;     
-                }}
+                if (button == Buttons.RIGHT) {
+                    if (scrollPane != null) {
+                    scrollPane.remove();
+                    return true;
+                    }
+                }
+            }
             return false;
-   }
-        
+        }
 
         @Override
         public boolean touchUp(int x, int y, int pointer, int button) {
@@ -410,7 +426,7 @@ private boolean Win=false;
 
         @Override
         public boolean scrolled(int amount) {
-         
+
             return true;
         }
 
@@ -420,30 +436,26 @@ private boolean Win=false;
             return true;
         }
     }
-     public class MenuItem extends Label
-{
-    private boolean selected = false;
-    private LabelStyle menuOption;
-    public MenuItem(CharSequence text, LabelStyle menuOption)
-    {
-        super(text, menuOption);
-        this.menuOption = menuOption;
-        menuOption.fontColor = Color.WHITE;
-    }
-    public void select()
-    {
-        if(selected == true)
-        {
-            selected = false;
+
+    public class MenuItem extends Label {
+
+        private boolean selected = false;
+        private LabelStyle menuOption;
+
+        public MenuItem(CharSequence text, LabelStyle menuOption) {
+            super(text, menuOption);
+            this.menuOption = menuOption;
             menuOption.fontColor = Color.WHITE;
         }
-        else
-        {
-            selected = true;
-            menuOption.fontColor = Color.CYAN;
+
+        public void select() {
+            if (selected == true) {
+                selected = false;
+                menuOption.fontColor = Color.WHITE;
+            } else {
+                selected = true;
+                menuOption.fontColor = Color.CYAN;
+            }
         }
     }
 }
-}
-
-

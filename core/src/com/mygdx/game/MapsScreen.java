@@ -31,7 +31,7 @@ class MapsScreen implements Screen {
     private SpriteBatch batch;
     private Texture gameIm;
     Skin buttonsSkin = new Skin();
-    Stage stage = new Stage();
+ Stage stage = new Stage();
     Map currentMap=null;
 
     public MapsScreen(TDGame aThis) {
@@ -39,21 +39,18 @@ class MapsScreen implements Screen {
         game = aThis;
         batch = new SpriteBatch();
         gameIm = new Texture("Intro.jpg");
+                currentMap=game.mapsList.get(0);
+     
 
     }
 
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float f) {
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);// Make the stage consume event
+   
+    private void createButtons()
+    {
+           stage = new Stage();
+       Gdx.input.setInputProcessor(stage);// Make the stage consume event
         buttonsSkin=game.createBasicSkin();
-        if(currentMap==null)
-            currentMap=game.mapsList.get(0);
+
         
         TextButton MapName = new TextButton(currentMap.name(), buttonsSkin); // Use the initialized skin
         MapName.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
@@ -116,11 +113,18 @@ class MapsScreen implements Screen {
                 return true;
             }
         });
-        Gdx.input.setInputProcessor(stage);// Make the stage consume event
+       
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+     @Override
+    public void show() {   
+        Gdx.input.setInputProcessor(stage);
+    }
 
+    @Override
+    public void render(float f) {
+              
+      createButtons();
         batch.begin();
         batch.draw(gameIm, 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();

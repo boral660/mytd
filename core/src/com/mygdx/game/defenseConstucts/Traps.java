@@ -6,6 +6,8 @@
 package com.mygdx.game.defenseConstucts;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.bullets.Bullet;
+import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.navigation.Cell;
 
 /**
@@ -24,5 +26,30 @@ public class Traps extends DefenseConstruction {
     static boolean canStayOnRoad()
     {
        return true;
+    }
+    
+       /**
+     *  Атаковать цель
+     * @param target враг, которого необходимо атаковать
+     * 
+    */  
+    public Bullet attack(Enemy target)
+    {
+         _destroy=true;
+         target.reduseHP(_damage);
+         return null;
+    }
+    
+      /**
+     * Проверить может ли строение атаковать цель
+     * @param target враг, которого нужно атаковать
+     * @return false - если не может, true если может
+     * 
+    */  
+    public boolean canAttack(Enemy target)
+    {
+     
+         return _position.equals(target.position());
+                
     }
 }

@@ -170,15 +170,20 @@ public class Map {
           map.roadCell().add(new Cell(8,3));
           map.roadCell().add(new Cell(8,4));
           // Создаём башни
-       //   map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(7,3)));
-       //    map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
-       //    map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
+             map._defenseConst.add(DCFactory.getTower("ElectricBomb", new Cell(6,2)));
+                map._defenseConst.add(DCFactory.getTower("Wire", new Cell(1,0)));
+               map._defenseConst.add(DCFactory.getTower("Spike", new Cell(3,2)));
+        // map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(10,5)));
+         //  map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
+         // map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
           
           // Создаём первую волну
          ArrayList<Enemy> enemies=new ArrayList<Enemy>();
          enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));
          enemies.add( EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell()));
          enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
          map.waves().add(new Wave(enemies,map.roadCell()));
          // Cоздаём вторую волну
          enemies=new ArrayList<Enemy>();
@@ -186,6 +191,8 @@ public class Map {
          enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
          enemies.add( EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell()));
          enemies.add( EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell()));
+                  enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+                  
         map.waves().add(new Wave(enemies,map.roadCell()));
         
         return map;

@@ -58,10 +58,10 @@ public class Bullet {
             _destx=_target.x();
             _desty=_target.y();
         }
-       float speed =3;
+       float speed =4;
 
     float x;
-    if(_x!=_destx && _y<_desty){
+    if(_x!=_destx && _y!=_desty){
       if(_x<_destx){
            if(_x+speed<_destx)
                x=_x+speed;

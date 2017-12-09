@@ -26,12 +26,25 @@ public abstract class DefenseConstruction {
        _attackSpeed=atkSpeed;
         _texture=pict;
         _textureForBullet=pictForBullet;
+        _destroy=false;
 
     }
       /**
      * Радиус атаки
      */
     protected int _rangeAttack;
+   
+    /**
+     * Сооружение разрушено
+     */
+    protected boolean _destroy;
+    
+    /**
+     * Сооружение разрушено
+     */
+    public boolean IsDestroy() {
+        return _destroy;
+    }
 
     /**
      * Радиус атаки
@@ -80,9 +93,7 @@ public abstract class DefenseConstruction {
     */  
     public Bullet attack(Enemy target)
     {
-        float x=target.position().x();
-        float y=target.position().y();
-        
+       Bullet bull=null;
        if(_lastAttackTime==0 || (TimeUtils.millis() - _lastAttackTime > _attackSpeed*1000))
         {
            
@@ -93,14 +104,14 @@ public abstract class DefenseConstruction {
              TextureRegion temp=new TextureRegion();
              temp.setRegion(_textureForBullet);
              
-              if(_rangeAttack==0)  return new Bullet(x, y, x, y,_damage, temp); // Создать пулю у цели
-                  
-            return new Bullet(_position.x()*Cell.Size+Cell.Size/2,_position.y()*Cell.Size+Cell.Size/2, target,_damage, temp);
+              if(_rangeAttack==0)   
+                  target.reduseHP(_damage); // Создать пулю у цели
+              
+              else 
+                   bull= new Bullet(_position.x()*Cell.Size+Cell.Size/2,_position.y()*Cell.Size+Cell.Size/2, target,_damage, temp);
          }
-         return null;
         }
-        else
-            return null;
+        return bull;
             
     }
     

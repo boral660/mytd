@@ -37,13 +37,12 @@ Stage stage = new Stage();
         game=aThis;
         batch = new SpriteBatch();
         intrIm = new Texture("Intro.jpg");
+        createButtons();
     }
-
-
- 
-    @Override
-    public void render(float delta) {
-         stage = new Stage();
+    
+    private void createButtons()
+    {
+        stage = new Stage();
          Gdx.input.setInputProcessor(stage);// Make the stage consume event
 
         buttonsSkin=game.createBasicSkin();
@@ -58,7 +57,7 @@ Stage stage = new Stage();
          stage.addActor(ExitButton);
          
      
-      Gdx.input.setInputProcessor(stage);// Make the stage consume event
+      
         
         newGameButton.addListener( new ClickListener() {
              @Override
@@ -68,7 +67,7 @@ Stage stage = new Stage();
          }
         } );
         
-        Gdx.input.setInputProcessor(stage);// Make the stage consume event
+    
         
         ExitButton.addListener( new ClickListener() {
              @Override
@@ -78,7 +77,12 @@ Stage stage = new Stage();
             return true;
          }
     } );
-        
+    }
+
+ 
+    @Override
+    public void render(float delta) {
+         
        
            Gdx.gl.glClearColor(0, 0, 0.2f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -15,7 +15,7 @@ import com.mygdx.game.navigation.Cell;
  */
 public class DCFactory {
  private static TextureAtlas  Atlas= new TextureAtlas(Gdx.files.internal("Texturs.atlas"));
-    public static Tower getTower(String Type,Cell pos){
+    public static DefenseConstruction getTower(String Type,Cell pos){
         // Башни
        if(Type.equals("ArcherTower")) {
            return new Tower(pos,5,35,1, Atlas.findRegion("ArcherTower"),Atlas.findRegion("MetallicBall"), 3);
@@ -26,7 +26,17 @@ public class DCFactory {
        else if(Type.equals("LightTower")) {
            return new Tower(pos,1,35,0.3f, Atlas.findRegion("LightTower"),Atlas.findRegion("Hit"), 2);
        }
-        return null;
+       else if(Type.equals("Wire")) {
+           return new Traps(pos,20,10,0, Atlas.findRegion("Wire"),Atlas.findRegion("Hit"));
+       }
+       else if(Type.equals("ElectricBomb")) {
+           return new Traps(pos,30,15,0, Atlas.findRegion("ElectricBomb"),Atlas.findRegion("Hit"));
+       }
+         else if(Type.equals("Spike")) {
+           return new Traps(pos,50,20,0, Atlas.findRegion("Spike"),Atlas.findRegion("Hit"));
+       }
+        
+       return null;
     }
   
 }

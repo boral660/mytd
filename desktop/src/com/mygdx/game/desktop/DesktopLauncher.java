@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
                 config.title = "TDGame";
                  config.width = 1024;
-                config.height = 512;
+                config.height = 562;
                 config.resizable=false;
 		new LwjglApplication(new TDGame(), config);
 
