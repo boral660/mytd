@@ -12,6 +12,7 @@ import com.mygdx.game.enemies.Wave;
 import java.util.ArrayList;
 import com.mygdx.game.navigation.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
+import java.util.Random;
 /**
  * Игровая карта
  * @author PK
@@ -153,9 +154,111 @@ public class Map {
     */     
    static public Map GenerateMap1()
     {
-         MainConstruction main=new MainConstruction(new Cell(8,5),150);
+         MainConstruction main=new MainConstruction(new Cell(8,5),500);
             // Создать первую карту
           Map map=new Map("Long-long way", 100,main);
+          for(int i=0; i<16; i++)
+          {
+                map.roadCell().add(new Cell(i,0));
+          }
+           for(int i=1; i<7; i++)
+          {
+                map.roadCell().add(new Cell(15,i));
+          }
+           for(int i=15; i>0; i--)
+          {
+                map.roadCell().add(new Cell(i,7));
+          }
+            for(int i=7; i>1; i--)
+          {
+                map.roadCell().add(new Cell(0,i));
+          }
+          for(int i=1; i<9; i++)
+          {
+                map.roadCell().add(new Cell(i,2));
+          }
+          map.roadCell().add(new Cell(8,3));
+           map.roadCell().add(new Cell(8,4));
+          
+          // Создаём первую волну
+         ArrayList<Enemy> enemies=new ArrayList<Enemy>();
+         enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
+         map.waves().add(new Wave(enemies));
+         // Cоздаём вторую волну
+         enemies=new ArrayList<Enemy>();
+         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell()));
+         enemies.add( EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell()));
+                  enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+                  
+        map.waves().add(new Wave(enemies));
+        
+        return map;
+    }
+   
+   
+ /**
+     * Заполнение карты по второму шаблону
+     * 
+    */     
+   static public Map GenerateMap2()
+    {
+         MainConstruction main=new MainConstruction(new Cell(7,4),350);
+            // Создать первую карту
+          Map map=new Map("Two fronts", 100,main);
+             for(int i=0; i<16; i++)
+          {
+              if(i!=7)
+                map.roadCell().add(new Cell(i,4));
+          }
+          // Создаём волну первого фронта
+             ArrayList<Cell> Left_road = new ArrayList();
+          for(int i=0; i<7; i++)
+          {
+               Left_road.add(new Cell(i,4));
+          }
+          ArrayList<Enemy> enemies=new ArrayList<Enemy>();
+          enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road));
+         enemies.add( EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road));
+         enemies.add( EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road));
+          map.waves().add(new Wave(enemies));
+          // Создаём волну второго фронта
+          ArrayList<Cell> Right_road = new ArrayList();
+              for(int i=15; i>8; i--)
+          {
+               Right_road.add(new Cell(i,4));
+          }
+            enemies=new ArrayList<Enemy>();
+          enemies.add( EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road));
+         enemies.add( EnemyFactory.getEnemy("Ork", Right_road.get(0), Right_road));
+         enemies.add( EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road));
+          map.waves().add(new Wave(enemies));
+        
+         // Cоздаём третью волну
+            enemies=new ArrayList<Enemy>();
+          enemies.add( EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road));
+         enemies.add( EnemyFactory.getEnemy("Ork",Right_road.get(0), Right_road));
+         enemies.add( EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road));
+         enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road));
+         enemies.add( EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road));
+         enemies.add( EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road));
+        map.waves().add(new Wave(enemies));
+        return map;
+    }
+    /**
+     * Заполнение карты по первому шаблону
+     * 
+    */     
+   static public Map GenerateMap3()
+    {
+         MainConstruction main=new MainConstruction(new Cell(8,5),500);
+            // Создать первую карту
+          Map map=new Map("Random Waves", 100,main);
           map.roadCell().add(new Cell(0,0));
           map.roadCell().add(new Cell(1,0));
           map.roadCell().add(new Cell(2,0));
@@ -169,35 +272,14 @@ public class Map {
           map.roadCell().add(new Cell(8,2));
           map.roadCell().add(new Cell(8,3));
           map.roadCell().add(new Cell(8,4));
-          // Создаём башни
-             map._defenseConst.add(DCFactory.getTower("ElectricBomb", new Cell(6,2)));
-                map._defenseConst.add(DCFactory.getTower("Wire", new Cell(1,0)));
-               map._defenseConst.add(DCFactory.getTower("Spike", new Cell(3,2)));
-        // map._defenseConst.add(DCFactory.getTower("ArcherTower", new Cell(10,5)));
-         //  map._defenseConst.add(DCFactory.getTower("IceTower", new Cell(1,1)));
-         // map._defenseConst.add(DCFactory.getTower("LightTower", new Cell(2,3)));
-          
-          // Создаём первую волну
-         ArrayList<Enemy> enemies=new ArrayList<Enemy>();
-         enemies.add( EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-         map.waves().add(new Wave(enemies,map.roadCell()));
-         // Cоздаём вторую волну
-         enemies=new ArrayList<Enemy>();
-         enemies.add( EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell()));
-         enemies.add( EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell()));
-                  enemies.add( EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-                  
-        map.waves().add(new Wave(enemies,map.roadCell()));
+         Random rand = new Random();        
+         int num =rand.nextInt(15) + 1;
+            
+         for(int i=0; i<num; i++){
+         map.waves().add(Wave.createRandomWave(i+2, map.roadCell()));
+         }
         
         return map;
     }
    
-   
-
 }

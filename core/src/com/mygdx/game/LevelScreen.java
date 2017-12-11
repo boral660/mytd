@@ -40,14 +40,12 @@ import java.util.Iterator;
 import com.mygdx.game.navigation.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
 
-
 /**
  *
  * @author PK
  */
 class LevelScreen implements Screen {
 
-    
     TDGame game;
     Map map;
     OrthographicCamera camera;
@@ -68,12 +66,13 @@ class LevelScreen implements Screen {
     private List list;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
-    BitmapFont node15=null;
-    BitmapFont node20=null;
-    TextButton start;
-       InputMultiplexer multiplexer = new InputMultiplexer();
-        MouseProcessor inputProcessor = new MouseProcessor();
-       
+   private BitmapFont node15 = null;
+    private BitmapFont node20 = null;
+    private TextButton start;
+    private TextButton exit;
+    private InputMultiplexer multiplexer = new InputMultiplexer();
+   private  MouseProcessor inputProcessor = new MouseProcessor();
+
     private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     /**
      * Снаряды
@@ -99,32 +98,31 @@ class LevelScreen implements Screen {
         currentWave = null;
         numberWave = 0;
 
-
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(inputProcessor);
         multiplexer.addProcessor(stage);
         createStartButton();
-      
-        
+        createExitButton();
+
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
         parameter = new FreeTypeFontParameter();
-            parameter.size = 15;
-            node15 = generator.generateFont(parameter);
-               parameter.size = 20;
-            node20 = generator.generateFont(parameter);
-        
+        parameter.size = 15;
+        node15 = generator.generateFont(parameter);
+        parameter.size = 20;
+        node20 = generator.generateFont(parameter);
+
     }
 
     // Отрисовка надписей
-    public void renderNode(String str, float x, float y,int size) {
-        if(size==15)
-             node15.draw(batch, str, x, y);
-        if(size==20)
-        node20.draw(batch, str, x, y);
+    public void renderNode(String str, float x, float y, int size) {
+        if (size == 15) {
+            node15.draw(batch, str, x, y);
+        }
+        if (size == 20) {
+            node20.draw(batch, str, x, y);
+        }
 
     }
-
-   
 
     public void renderBullits() {
 
@@ -153,12 +151,12 @@ class LevelScreen implements Screen {
     public void renderEnemy() {
         for (Enemy enemy : currentWave.enemies()) {
             if (enemy.canAttack(map.main().position())) {
-                Bullet temp = enemy.attack(map.main().position(), map.main().position().x() * Cell.Size + 32, map.main().position().y() * Cell.Size - 32);
+                Bullet temp = enemy.attack(map.main().position(), map.main().position().x() * Cell.Size + Cell.Size / 2, map.main().position().y() * Cell.Size + Cell.Size / 2);
                 if (temp != null) {
                     _bullets.add(temp);
                 }
             } else {
-                enemy.move();
+                enemy.move(0f);
             }
             if (enemy.direction().equals(Direction.north())) {
                 batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 180f);
@@ -168,7 +166,7 @@ class LevelScreen implements Screen {
                 batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 1f, false);
 
             } else {
-                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4);
+                batch.draw(enemy.texture(), enemy.x(), enemy.y(), Cell.Size / 4, Cell.Size / 4, Cell.Size / 2, Cell.Size / 2, 1f, 1f, 0f);
             }
 
         }
@@ -195,7 +193,7 @@ class LevelScreen implements Screen {
         batch.draw(Panel, 0, 512);
 
         if (map.main().integrity() <= 0) {
-            renderNode("You lose the game!:c" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+            renderNode("You lose the game!:c", Gdx.graphics.getWidth() * 6 / 16, Gdx.graphics.getHeight() - 20, 20);
             currentWave = null;
         }
 
@@ -214,7 +212,7 @@ class LevelScreen implements Screen {
         if (currentWave != null) {
             renderEnemy();
             //Количество врагов
-             renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
+            renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight() - 20, 20);
 
         }
 
@@ -225,47 +223,41 @@ class LevelScreen implements Screen {
         //Прочность главного строения
         renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(), map.main().position().x() * Cell.Size, map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
         //Количество золота
-        renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight()-20, 20);
+        renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight() - 20, 20);
         //Количество волн
-         renderNode("Wave " + (numberWave+1) + "/" + map.waves().size(), Gdx.graphics.getWidth() * 1 / 16, Gdx.graphics.getHeight()-20, 20);
+        renderNode("Wave " + (numberWave + 1) + "/" + map.waves().size(), Gdx.graphics.getWidth() * 1 / 16, Gdx.graphics.getHeight() - 20, 20);
 
-        if (Win && map.main().integrity() > 0)
-        renderNode("You win the game!" , Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight()-20, 20);
-       
-        
-       
+        if (Win && map.main().integrity() > 0) {
+            renderNode("You win the game!", Gdx.graphics.getWidth() * 6 / 16, Gdx.graphics.getHeight() - 20, 20);
+        }
+
         batch.end();
         stage.act();
         stage.draw();
         System.gc();
 
     }
- @Override
-    public void show() {   
-       
+
+    @Override
+    public void show() {
+
     }
-   
+
     public void createList(float x, float y) {
-        if(Gdx.graphics.getHeight()-y<150)
-            y-=150;
-        if(Gdx.graphics.getWidth()-x<200)
-            x-=200;
-        
+        if (Gdx.graphics.getHeight() - y < 150) {
+            y -= 150;
+        }
+        if (Gdx.graphics.getWidth() - x < 200) {
+            x -= 200;
+        }
+
         list = new List(skin);
-        if(map.CheckCell(currentCell))
-        { 
-             list.setItems(ListActions);
-        }
-            else
-        {
-        if(map.CheckRoad(currentCell))
-        {
-            list.setItems(ListTraps);
-        }
-        else
-        {
-            list.setItems(ListTowers);
-        }
+        if (map.CheckCell(currentCell)) {
+            list.setItems(ListActions);
+        } else if (map.CheckRoad(currentCell)) {
+            list.setItems(DCFactory.ListTraps);
+        } else {
+            list.setItems(DCFactory.ListTowers);
         }
 
         list.getSelection().setMultiple(false);
@@ -278,91 +270,75 @@ class LevelScreen implements Screen {
         scrollPane.setX(x);
         scrollPane.setY(y);
         stage.addActor(scrollPane);
-    scrollPane.addListener(new InputListener() {
-        public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-               if (button == Buttons.RIGHT) {
+        scrollPane.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (button == Buttons.RIGHT) {
                     if (scrollPane != null) {
-                    scrollPane.remove();
-                            Gdx.input.setInputProcessor(multiplexer);
-                    return true;
+                        scrollPane.remove();
+                        Gdx.input.setInputProcessor(multiplexer);
+                        return true;
                     }
                 }
                 return false;
-        }
+            }
         });
-    
 
-    scrollPane.addListener(new ChangeListener() {
+        scrollPane.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-             Object obj=list.getSelected();
-             if(obj==null)
-                 obj=list.getItems().first();
-              if(obj.toString().compareTo("Destroy tower")==0)
-            {
-                       destroyTower();
+                Object obj = list.getSelected();
+                if (obj == null) {
+                    obj = list.getItems().first();
+                }
+                if (obj.toString().compareTo("Destroy construction") == 0) {
+                    destroyTower();
+                } else if (obj.toString().compareTo("IceTower - 50") == 0) {
+                    buyTower(DCFactory.getTower("IceTower", currentCell));
+                } else if (obj.toString().compareTo("ArcherTower - 35") == 0) {
+                    buyTower(DCFactory.getTower("ArcherTower", currentCell));
+                } else if (obj.toString().compareTo("LightTower - 25") == 0) {
+                    buyTower(DCFactory.getTower("LightTower", currentCell));
+                } else if (obj.toString().compareTo("Wire - 10") == 0) {
+                    buyTower(DCFactory.getTower("Wire", currentCell));
+                } else if (obj.toString().compareTo("ElectricBomb - 15" ) == 0) {
+                    buyTower(DCFactory.getTower("ElectricBomb", currentCell));
+                } else if (obj.toString().compareTo("Spike - 20") == 0) {
+                    buyTower(DCFactory.getTower("Spike", currentCell));
+                }
+
             }
-             else if(obj.toString().compareTo("IceTower")==0 )
-             {
-                 buyTower(DCFactory.getTower("IceTower",currentCell ));
-             }
-                else if(obj.toString().compareTo("ArcherTower")==0 )
-             {
-                 buyTower(DCFactory.getTower("ArcherTower",currentCell ));
-             }
-                else if(obj.toString().compareTo("LightTower")==0 )
-             {
-                 buyTower(DCFactory.getTower("LightTower",currentCell ));
-             }
-                else if(obj.toString().compareTo("Wire")==0 )
-             {
-                 buyTower(DCFactory.getTower("Wire",currentCell ));
-             }
-                else if(obj.toString().compareTo("ElectricBomb")==0 )
-             {
-                 buyTower(DCFactory.getTower("ElectricBomb",currentCell ));
-             }
-                 else if(obj.toString().compareTo("Spike")==0 )
-             {
-                 buyTower(DCFactory.getTower("Spike",currentCell ));
-             }
-             
-                
-            }
-    });
+        });
 
     }
-    Object[] ListTowers = {DCFactory.getTower("ArcherTower",currentCell ), DCFactory.getTower("IceTower",currentCell ), DCFactory.getTower("LightTower",currentCell )};
-    Object[] ListTraps = {DCFactory.getTower("Wire",currentCell ),DCFactory.getTower("ElectricBomb",currentCell ),DCFactory.getTower("Spike",currentCell ),};
-    Object[] ListActions = {"Destroy construction" };
-     //купить башню
+
+    String[] ListActions = {"Destroy construction"};
+    
+    //купить башню
+    
     public void buyTower(DefenseConstruction dc) {
-        if(canBuyTower(dc)){
+        if ((currentMoney - dc.price()) >= 0) {
             map.defenseConst().add(dc);
-            currentMoney-=dc.price();
-           scrollPane.remove();
-           Gdx.input.setInputProcessor(multiplexer);
+            currentMoney -= dc.price();
+            scrollPane.remove();
+            Gdx.input.setInputProcessor(multiplexer);
         }
     }
-      //продать башню
+    //продать башню
+    
     public void destroyTower() {
-         Iterator<DefenseConstruction> iter =  map.defenseConst().iterator();
+        Iterator<DefenseConstruction> iter = map.defenseConst().iterator();
         while (iter.hasNext()) {
 
             DefenseConstruction dc = iter.next();
 
-              if (dc.position().equals(currentCell)) {
+            if (dc.position().equals(currentCell)) {
                 iter.remove();
             }
         }
-           scrollPane.remove();
-           Gdx.input.setInputProcessor(multiplexer);
+        scrollPane.remove();
+        Gdx.input.setInputProcessor(multiplexer);
     }
-     //проверить, возможно ли купить сооружение
-    public boolean canBuyTower(DefenseConstruction dc) {
-        return (currentMoney-dc.price())>0;
-        
-    }
+
 
     // Конец волны
     public void endWave() {
@@ -370,13 +346,11 @@ class LevelScreen implements Screen {
         if (numberWave + 1 != map.waves().size()) {
             numberWave++;
 
-
         } else {
             Win = true;
         }
-        
-    }
 
+    }
 
     // Создание кнопки для переключения волны 
     public void createStartButton() {
@@ -385,34 +359,34 @@ class LevelScreen implements Screen {
         start.setBounds(0, 0, 150, 30);
         start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight() - 40);
         start.setTouchable(Touchable.enabled);
-      
+
         stage.addActor(start);
 
         start.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
                 currentWave = map.waves().get(numberWave);
-                
+
                 return true;
             }
         });
     }
-
-    public void createButtons() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Skin buttonsSkin = game.createBasicSkin();
-
-        TextButton exit = new TextButton("Change Map", buttonsSkin); // Use the initialized skin
-        exit.setBounds(0, 0, Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 16);
-        exit.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 16, Gdx.graphics.getHeight() / 2);
+// 
+    public void createExitButton() {
+      Skin buttonsSkin = game.createBasicSkin();
+        exit = new TextButton("Exit", buttonsSkin); // Use the initialized skin
+        exit.setBounds(0, 0, 100, 30);
+        exit.setPosition(Gdx.graphics.getWidth() * 10 / 16, Gdx.graphics.getHeight() - 40);
         exit.setTouchable(Touchable.enabled);
+
         stage.addActor(exit);
 
         exit.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(game.mapsScreen);
+                            game.mapsScreen.restart();
+                             game.setScreen( game.mapsScreen );
+                             
                 return true;
             }
         });
@@ -434,7 +408,7 @@ class LevelScreen implements Screen {
             }
             batch.draw(dc.texture(), dc.position().x() * Cell.Size, dc.position().y() * Cell.Size, Cell.Size, Cell.Size);
         }
-         Iterator<DefenseConstruction> iter =  map.defenseConst().iterator();
+        Iterator<DefenseConstruction> iter = map.defenseConst().iterator();
         while (iter.hasNext()) {
 
             DefenseConstruction td = iter.next();
@@ -445,7 +419,6 @@ class LevelScreen implements Screen {
         }
 
     }
-    
 
     // Выделить квадраты
     public void renderSquare() {
@@ -518,18 +491,17 @@ class LevelScreen implements Screen {
                     if (scrollPane != null) {
                         scrollPane.remove();
                     }
-                    if(!map.main().position().equals(currentCell))
-                    {
+                    if (!map.main().position().equals(currentCell)) {
                         createList(x, Gdx.graphics.getHeight() - y);
-                          Gdx.input.setInputProcessor(stage);
+                        Gdx.input.setInputProcessor(stage);
                     }
                     return true;
                 }
                 if (button == Buttons.RIGHT) {
                     if (scrollPane != null) {
-                    scrollPane.remove();
-                            Gdx.input.setInputProcessor(multiplexer);
-                    return true;
+                        scrollPane.remove();
+                        Gdx.input.setInputProcessor(multiplexer);
+                        return true;
                     }
                 }
             }

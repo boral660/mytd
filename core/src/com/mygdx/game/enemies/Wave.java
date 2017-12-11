@@ -7,15 +7,16 @@ package com.mygdx.game.enemies;
 
 import com.mygdx.game.navigation.Cell;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Волны
  * @author PK
  */
 public class Wave {
-    public Wave (ArrayList<Enemy> enemies,ArrayList<Cell> roadcell ){
+    public Wave (ArrayList<Enemy> enemies){
         _enemies=enemies;
-        _roadCell=roadcell;
+
     }
      /**
      * Траектория до главного строения
@@ -29,16 +30,20 @@ public class Wave {
         return _enemies;
     }
     
-     /**
+/**
      * Траектория до главного строения
      */
-    protected ArrayList<Cell> _roadCell;
-
-    /**
-     * Траектория до главного строения
-     */
-    public ArrayList<Cell> roadCell() {
-        return _roadCell;
+    public static Wave createRandomWave(int countEnemy, ArrayList<Cell> road)
+    {
+        ArrayList<Enemy> enemies=new ArrayList<Enemy>();
+        for(int i=countEnemy; i>0; i--)
+        {              
+            Random rand = new Random();        
+            int num =rand.nextInt( EnemyFactory.EnemyList.length);
+            enemies.add(EnemyFactory.getEnemy(EnemyFactory.EnemyList[num], road.get(0), road));
+            
+        }
+        return new Wave(enemies);
     }
 
 }

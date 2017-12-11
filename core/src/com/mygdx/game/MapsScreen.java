@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,39 +34,53 @@ class MapsScreen implements Screen {
     Skin buttonsSkin = new Skin();
  Stage stage = new Stage();
     Map currentMap=null;
+        ArrayList<Map> mapsList=new ArrayList<Map>();
 
     public MapsScreen(TDGame aThis) {
         super();
         game = aThis;
         batch = new SpriteBatch();
         gameIm = new Texture("Intro.jpg");
-                currentMap=game.mapsList.get(0);
+        restart();
+        currentMap=mapsList.get(0);
      
 
     }
+    public void restart()
+    {
+        mapsList.clear();
+            mapsList.add(Map.GenerateMap1());
+        mapsList.add(Map.GenerateMap2());
+        mapsList.add(Map.GenerateMap3());
+        currentMap=mapsList.get(0);
+        createButtons();
+    }
 
-   
+   private void createMapNameButt()
+   {
+       TextButton MapName = new TextButton(currentMap.name(), buttonsSkin); // Use the initialized skin
+        MapName.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+        MapName.setTouchable(Touchable.enabled);
+        stage.addActor(MapName);
+        
+
+        MapName.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new LevelScreen(game,currentMap));
+                return true;
+            }
+        });
+
+   }
     private void createButtons()
     {
            stage = new Stage();
        Gdx.input.setInputProcessor(stage);// Make the stage consume event
         buttonsSkin=game.createBasicSkin();
 
+        createMapNameButt();
         
-        TextButton MapName = new TextButton(currentMap.name(), buttonsSkin); // Use the initialized skin
-        MapName.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
-        MapName.setTouchable(Touchable.enabled);
-        stage.addActor(MapName);
-
-        MapName.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-  
-                game.setScreen(new LevelScreen(game,currentMap));
-                return true;
-            }
-        });
-
         TextButton PrevMap = new TextButton("<-", buttonsSkin); // Use the initialized skin
         PrevMap.setBounds(0, 0, Gdx.graphics.getWidth() / 16, Gdx.graphics.getHeight() / 16);
         PrevMap.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 8);
@@ -97,8 +112,9 @@ class MapsScreen implements Screen {
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
                 if(changeMapsOnList(currentMap.name(),1)==2)
                 {
-                    currentMap=game.mapsList.get(game.mapsList.size()-1);
+                    currentMap=mapsList.get(mapsList.size()-1);
                 }
+                   createMapNameButt();
                 return true;
             }
         });
@@ -108,8 +124,11 @@ class MapsScreen implements Screen {
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
                 if(changeMapsOnList(currentMap.name(),0)==2)
                 {
-                    currentMap=game.mapsList.get(0);
+                    currentMap=mapsList.get(0);
+              
+                    
                 }
+                  createMapNameButt();
                 return true;
             }
         });
@@ -118,13 +137,16 @@ class MapsScreen implements Screen {
     }
      @Override
     public void show() {   
-        Gdx.input.setInputProcessor(stage);
+          Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
     public void render(float f) {
               
-      createButtons();
+
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(gameIm, 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
@@ -162,7 +184,7 @@ class MapsScreen implements Screen {
     int changeMapsOnList(String name, int direction) {
         int index = -1;
         int find = -1;
-        for (Map map : game.mapsList) {
+        for (Map map : mapsList) {
             index++;
             String mapsName = map.name();
             if (name.equals(mapsName)) {
@@ -171,7 +193,7 @@ class MapsScreen implements Screen {
         }
         if (find != -1) {
             index = -1;
-            for (Map map : game.mapsList) {
+            for (Map map : mapsList) {
                 index++;
                 if (direction == 0) {
                     if (find == index - 1) {

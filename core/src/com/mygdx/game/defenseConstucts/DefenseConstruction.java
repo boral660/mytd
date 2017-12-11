@@ -39,7 +39,7 @@ public abstract class DefenseConstruction {
      */
      @Override
     public String toString() {
-        return _name;
+        return new String(_name + " - " +_price);
     }
 
     

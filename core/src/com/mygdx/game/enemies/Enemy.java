@@ -109,10 +109,14 @@ public abstract class Enemy {
     */  
     public boolean canAttack(Cell target)
     {
-       return (_position.x()<=target.x()+1+1*_rangeAttack && _position.y()==target.y())      // Цель слева от врага
-              ||(_position.x()>=target.x()-1-1*_rangeAttack && _position.y()==target.y())      // Цель справа от врага
-              ||(_position.y()>=target.y()+1+1*_rangeAttack && _position.x()==target.x())     // Цель снизу от врага
-              ||(_position.y()>=target.y()-1-1*_rangeAttack && _position.x()==target.x());     // Цель сверху от врага
+
+       int deltX=_position.x()-target.x();
+        int deltY=_position.y()-target.y();
+       return (deltX>0 && deltX<=_rangeAttack && deltY==0)      // Цель слева от врага
+              ||(deltX<0 && (deltX*-1)<=_rangeAttack && deltY==0)      // Цель справа от врага
+             ||(deltY>0 && deltY<=_rangeAttack && deltX==0)     // Цель снизу от врага
+             ||(deltY<0 && (deltY*-1)<=_rangeAttack && deltX==0);     // Цель сверху от врага
+       
     }
      /**
      *  Атаковать цель
@@ -152,37 +156,53 @@ public abstract class Enemy {
      * @param countStep расстояние
      * 
     */  
-    public void move()
+    public void move(float shift)
     {
         if(_path.size()>0){
-       _direction=_path.get(0).getFirst();
+             _direction=_path.get(0).getFirst();
+   
      
-       float countStep=_path.get(0).getSecond() -_speed;
+       float deltaC=_path.get(0).getSecond() -(_speed-shift);
        
-      _path.get(0).setSecond(countStep);
-       if(countStep<=0 || countStep ==0){
+       float countStep;
+       if(deltaC<0)
+       {
+           countStep=_path.get(0).getSecond();
+            _path.remove(0);
+       }
+       else{
+        _path.get(0).setSecond(deltaC);
+            countStep=_speed-shift;
+       }
+ 
+       if( deltaC ==0 ){
            countStep=0;
            _path.remove(0);
+          
        }
-       else
-           countStep=_speed;
        
+
+     
         if(_direction.equals(Direction.north())){
             _y+=countStep;
-            if(countStep==0) _position=new Cell(_position.x(),_position.y()+1);
+            if(countStep==0||deltaC<0) _position=new Cell(_position.x(),_position.y()+1);
         }
         else if(_direction.equals(Direction.south())){
             _y-=countStep;
-             if(countStep==0) _position=new Cell(_position.x(),_position.y()-1);
+             if(countStep==0||deltaC<0) _position=new Cell(_position.x(),_position.y()-1);
         }
         else if(_direction.equals(Direction.west())){
             _x+=countStep;
-             if(countStep==0) _position=new Cell(_position.x()+1,_position.y());
+             if(countStep==0||deltaC<0) _position=new Cell(_position.x()+1,_position.y());
         }
-        else if(_direction.equals(Direction.south())){
+        else if(_direction.equals(Direction.east())){
             _x-=countStep;
-            if(countStep==0) _position=new Cell(_position.x()-1,_position.y());
+            if(countStep==0 ||deltaC<0) _position=new Cell(_position.x()-1,_position.y());
         }
+        if(deltaC<0)
+            {
+                move(deltaC*-1);
+            }
         }
     }
       

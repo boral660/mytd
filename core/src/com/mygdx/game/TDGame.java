@@ -36,7 +36,6 @@ public class TDGame extends Game {
     public MapsScreen mapsScreen;
 
 
-    ArrayList<Map> mapsList=new ArrayList<Map>();
     
         OrthographicCamera camera;
         SpriteBatch batch;// это специальный класс, который используется для рисования 2D изображений, 
@@ -48,10 +47,7 @@ public class TDGame extends Game {
 	
 	@Override
 	public void create () {
-            
-            // Создать первую карту
-          mapsList.add(Map.GenerateMap1());
-          
+        
                  introScreen = new IntroScreen(this);
                  mapsScreen = new MapsScreen(this);
                

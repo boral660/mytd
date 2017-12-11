@@ -76,10 +76,11 @@ public class Direction {
         {
           return Direction.north();
         }
-        else 
+        else  if(first.y()>nextCell.y())
         {
           return Direction.south();
-        }    
+        }  
+        return null;
     }
     public Direction opposite() { 
         return new Direction(this._angle+180); 

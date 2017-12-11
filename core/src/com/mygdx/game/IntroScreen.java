@@ -30,7 +30,7 @@ OrthographicCamera camera;
 private SpriteBatch batch;
 private Texture intrIm;
 Skin buttonsSkin = new Skin();
-Stage stage = new Stage();
+Stage stage;
      
     public IntroScreen(TDGame aThis) {
          super();
@@ -62,6 +62,7 @@ Stage stage = new Stage();
         newGameButton.addListener( new ClickListener() {
              @Override
         public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+              game.mapsScreen.restart();
               game.setScreen( game.mapsScreen );
                return true;
          }
