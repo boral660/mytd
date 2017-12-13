@@ -13,9 +13,14 @@ package com.mygdx.game.mapAndOther;
  */
 public class Direction {
     
-    // определяем направление как угол в градусах от 0 до 360
+   /**
+     * Направление в градусах
+     */
     private int _angle = 90;
-
+    /**
+     * Высота
+     * @param anle угл
+     */
     private Direction(int angle) {
         // Приводим заданный угол к допустимому диапазону 
         angle = angle%360;
@@ -25,21 +30,31 @@ public class Direction {
     }
     
     // ------------------ Возможные направления ---------------------
-    
+       /**
+     * Направление север
+     */
     public static Direction north()
     { return new Direction(90); }
-    
+    /**
+     * Направление юг
+     */
     public static Direction south()
     { return new Direction(270); }
-
+    /**
+     * Направление запад
+     */
     public static Direction east()
     { return new Direction(0); }
-
+    /**
+     * Направление восток
+     */
     public static Direction west()
     { return new Direction(180); }
     
       // ------------------ Сравнить направления ---------------------
-    
+    /**
+     * Направление сравнение
+     */
     @Override
     public boolean equals(Object other) {
 
@@ -80,9 +95,18 @@ public class Direction {
         }  
         return null;
     }
+   /**
+     * Развернуть
+     * @return противоположное направление
+     */
     public Direction opposite() { 
         return new Direction(this._angle+180); 
     }
+    /**
+     * Противоположное ли направление
+     * @param other направление для сравнения
+     * @return  результат
+     */
      public boolean isOpposite(Direction other) {
         return this.opposite().equals(other);
     }

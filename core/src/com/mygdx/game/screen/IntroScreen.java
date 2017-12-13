@@ -83,7 +83,6 @@ public class IntroScreen implements Screen {
         ExitButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                System.runFinalizersOnExit(true);
                 System.exit(0);
                 return true;
             }

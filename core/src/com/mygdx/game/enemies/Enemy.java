@@ -80,7 +80,8 @@ public abstract class Enemy {
     }
 
     /**
-     * Текстура для отрисовки
+     * Функция для уменьшения здоровья
+     * @param value количество здоровья
      */
     public void reduseHP(int value) {
         if (_healPoints - value <= 0) {

@@ -10,9 +10,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -68,7 +65,6 @@ public class LevelScreen implements Screen {
     private Texture mainCon;
     private Texture roadIm;
     private Texture squareIm;
-    private Texture defense;
     private Texture Panel;
       /**
      * Переременые для отрисовки надписей
@@ -307,7 +303,7 @@ public class LevelScreen implements Screen {
         if (map.CheckCell(currentCell)) {
             list.setItems((Object[]) ListActions);
         } else if (map.CheckRoad(currentCell)) {
-            list.setItems(DCFactory.ListTraps);
+            list.setItems((Object[]) DCFactory.ListTraps);
         } else {
             list.setItems((Object[]) DCFactory.ListTowers);
         }
@@ -533,7 +529,7 @@ public class LevelScreen implements Screen {
         gameIm.dispose();
         batch.dispose();
         roadIm.dispose();
-        defense.dispose();
+
         squareIm.dispose();
 
     }

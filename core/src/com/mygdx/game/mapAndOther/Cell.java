@@ -11,7 +11,9 @@ package com.mygdx.game.mapAndOther;
  * @author PK
  */
 public class Cell {
-
+    /**
+     * Размер клетки
+     */
     public static int Size = 64;
 
     /**
