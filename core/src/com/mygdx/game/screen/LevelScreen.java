@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -30,50 +30,83 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.TDGame;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.defenseConstucts.DCFactory;
 import com.mygdx.game.enemies.Enemy;
 import com.mygdx.game.enemies.Wave;
-import com.mygdx.game.navigation.Direction;
+import com.mygdx.game.mapAndOther.Direction;
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.mygdx.game.navigation.Cell;
+import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
+import com.mygdx.game.mapAndOther.Map;
+import com.mygdx.game.mapAndOther.SkinForButton;
+
 
 /**
  *
  * @author PK
  */
-class LevelScreen implements Screen {
-
-    TDGame game;
-    Map map;
-    OrthographicCamera camera;
+public class LevelScreen implements Screen {
+        /**
+     * Ссылка на игру
+     */
+   private   TDGame game;
+    /**
+     * Ссылка на сущность для отрисовки
+     */
     private SpriteBatch batch;
+     /**
+     * Карта
+     */
+    private Map map;
+    /**
+     * Текстуры для отрисовки
+     */
     private Texture gameIm;
     private Texture mainCon;
     private Texture roadIm;
     private Texture squareIm;
     private Texture defense;
     private Texture Panel;
+      /**
+     * Переременые для отрисовки надписей
+     */
+      private FreeTypeFontGenerator generator;
+    private FreeTypeFontParameter parameter;
+   private BitmapFont node15 = null;
+    private BitmapFont node20 = null;
+    
+      /**
+     * Текущее состояние карты
+     */
     private Cell currentCell = new Cell(0, 0);
     private Wave currentWave;
     private int numberWave;
     private int currentMoney;
-    private Stage stage;
-    private ScrollPane scrollPane;
     private boolean Win = false;
+     /**
+    * Переременые для отрисовки списка
+    */
+     private ScrollPane scrollPane;
     private List list;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontParameter parameter;
-   private BitmapFont node15 = null;
-    private BitmapFont node20 = null;
+    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+     /**
+    * Сцена
+    */
+    private Stage stage;
+     /**
+    * Кнопки старта и выхода
+    */
     private TextButton start;
     private TextButton exit;
-    private InputMultiplexer multiplexer = new InputMultiplexer();
+      /**
+     * Считыватели действий
+     */
+   private InputMultiplexer multiplexer = new InputMultiplexer();
    private  MouseProcessor inputProcessor = new MouseProcessor();
 
-    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     /**
      * Снаряды
      */
@@ -84,7 +117,12 @@ class LevelScreen implements Screen {
         restart(aThis, aMap);
 
     }
-
+     /**
+     * Функция перезагружающаяя состояние экрана и карту
+     *
+     * @param aThis игра
+     * @param aMap карта
+     */
     public void restart(TDGame aThis, Map aMap) {
         game = aThis;
         map = aMap;
@@ -113,7 +151,12 @@ class LevelScreen implements Screen {
 
     }
 
-    // Отрисовка надписей
+   /**
+     * Отрисовка надписи
+     * @param str надпись
+     * @param xy - расположение
+     * @param size размер
+     */
     public void renderNode(String str, float x, float y, int size) {
         if (size == 15) {
             node15.draw(batch, str, x, y);
@@ -123,7 +166,10 @@ class LevelScreen implements Screen {
         }
 
     }
-
+  
+    /**
+     * Отрисовка снарядов
+     */
     public void renderBullits() {
 
         for (Bullet bullet : _bullets) {
@@ -147,7 +193,9 @@ class LevelScreen implements Screen {
         }
 
     }
-
+  /**
+     * Отрисовка врагов
+     */
     public void renderEnemy() {
         for (Enemy enemy : currentWave.enemies()) {
             if (enemy.canAttack(map.main().position())) {
@@ -243,6 +291,10 @@ class LevelScreen implements Screen {
 
     }
 
+      /**
+     * Создание списка
+     * @param xy - расположение
+     */
     public void createList(float x, float y) {
         if (Gdx.graphics.getHeight() - y < 150) {
             y -= 150;
@@ -253,11 +305,11 @@ class LevelScreen implements Screen {
 
         list = new List(skin);
         if (map.CheckCell(currentCell)) {
-            list.setItems(ListActions);
+            list.setItems((Object[]) ListActions);
         } else if (map.CheckRoad(currentCell)) {
             list.setItems(DCFactory.ListTraps);
         } else {
-            list.setItems(DCFactory.ListTowers);
+            list.setItems((Object[]) DCFactory.ListTowers);
         }
 
         list.getSelection().setMultiple(false);
@@ -271,6 +323,7 @@ class LevelScreen implements Screen {
         scrollPane.setY(y);
         stage.addActor(scrollPane);
         scrollPane.addListener(new InputListener() {
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Buttons.RIGHT) {
                     if (scrollPane != null) {
@@ -311,10 +364,15 @@ class LevelScreen implements Screen {
 
     }
 
+          /**
+     * Список действий
+     */
     String[] ListActions = {"Destroy construction"};
     
-    //купить башню
-    
+          /**
+     * Покупка башни
+     * @param dc - выбранная башня
+     */
     public void buyTower(DefenseConstruction dc) {
         if ((currentMoney - dc.price()) >= 0) {
             map.defenseConst().add(dc);
@@ -323,8 +381,10 @@ class LevelScreen implements Screen {
             Gdx.input.setInputProcessor(multiplexer);
         }
     }
-    //продать башню
-    
+         /**
+     * Продажа башни
+     * @param dc - выбранная башня
+     */
     public void destroyTower() {
         Iterator<DefenseConstruction> iter = map.defenseConst().iterator();
         while (iter.hasNext()) {
@@ -340,7 +400,9 @@ class LevelScreen implements Screen {
     }
 
 
-    // Конец волны
+         /**
+     * Окончание волны
+     */
     public void endWave() {
         currentWave = null;
         if (numberWave + 1 != map.waves().size()) {
@@ -352,9 +414,11 @@ class LevelScreen implements Screen {
 
     }
 
-    // Создание кнопки для переключения волны 
+          /**
+     * Создание кнопки старта волны
+     */
     public void createStartButton() {
-        Skin buttonsSkin = game.createBasicSkin();
+        Skin buttonsSkin = SkinForButton.createBasicSkin();
         start = new TextButton("Start wave", buttonsSkin); // Use the initialized skin
         start.setBounds(0, 0, 150, 30);
         start.setPosition(Gdx.graphics.getWidth() * 3 / 16, Gdx.graphics.getHeight() - 40);
@@ -371,9 +435,11 @@ class LevelScreen implements Screen {
             }
         });
     }
-// 
+         /**
+     * Создание кнопки выхода в меню
+     */
     public void createExitButton() {
-      Skin buttonsSkin = game.createBasicSkin();
+      Skin buttonsSkin = SkinForButton.createBasicSkin();
         exit = new TextButton("Exit", buttonsSkin); // Use the initialized skin
         exit.setBounds(0, 0, 100, 30);
         exit.setPosition(Gdx.graphics.getWidth() * 10 / 16, Gdx.graphics.getHeight() - 40);
@@ -393,7 +459,9 @@ class LevelScreen implements Screen {
 
     }
 
-    // Сделать так, что бы сначала отрисовывались нижние
+       /**
+     * Отрисовка башень
+     */
     public void renderTower() {
         for (DefenseConstruction dc : map.defenseConst()) {
             if (currentWave != null) {
@@ -420,7 +488,9 @@ class LevelScreen implements Screen {
 
     }
 
-    // Выделить квадраты
+       /**
+     * Отрисовка текущего квадрата
+     */
     public void renderSquare() {
         if (Gdx.graphics.getHeight() - currentCell.y() * Cell.Size > 50) {
             if (map.CheckCell(currentCell)) {
@@ -431,8 +501,9 @@ class LevelScreen implements Screen {
             batch.draw(squareIm, currentCell.x() * Cell.Size, currentCell.y() * Cell.Size, Cell.Size, Cell.Size);
         }
     }
-    // Найти позицию
-
+        /**
+     * Определение позиции мышки
+     */
     public Cell findCell(int x, int y) {
         return new Cell(x / Cell.Size, y / Cell.Size);
     }
@@ -466,7 +537,9 @@ class LevelScreen implements Screen {
         squareIm.dispose();
 
     }
-
+    /**
+     * Процессор следящий за действиями мышки
+     */
     public class MouseProcessor implements InputProcessor {
 
         @Override
@@ -531,25 +604,4 @@ class LevelScreen implements Screen {
         }
     }
 
-    public class MenuItem extends Label {
-
-        private boolean selected = false;
-        private LabelStyle menuOption;
-
-        public MenuItem(CharSequence text, LabelStyle menuOption) {
-            super(text, menuOption);
-            this.menuOption = menuOption;
-            menuOption.fontColor = Color.WHITE;
-        }
-
-        public void select() {
-            if (selected == true) {
-                selected = false;
-                menuOption.fontColor = Color.WHITE;
-            } else {
-                selected = true;
-                menuOption.fontColor = Color.CYAN;
-            }
-        }
-    }
 }

@@ -5,9 +5,8 @@
  */
 package com.mygdx.game.enemies;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.navigation.Cell;
+import com.mygdx.game.mapAndOther.Cell;
 import java.util.ArrayList;
 
 /**

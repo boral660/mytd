@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.game.navigation;
-
-import com.mygdx.game.navigation.Cell;
+package com.mygdx.game.mapAndOther;
 
 /**
     /*

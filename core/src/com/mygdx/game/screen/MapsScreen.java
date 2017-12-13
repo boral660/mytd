@@ -3,38 +3,59 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.game;
+package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.TDGame;
+import com.mygdx.game.mapAndOther.Map;
 import java.util.ArrayList;
+import com.mygdx.game.mapAndOther.SkinForButton;
 
 /**
+ * Экран выбора карты
  *
  * @author PK
  */
-class MapsScreen implements Screen {
+public class MapsScreen implements Screen {
 
+    /**
+     * Ссылка на игру
+     */
     TDGame game;
-    OrthographicCamera camera;
+    /**
+     * Ссылка на сущность для отрисовки
+     */
     private SpriteBatch batch;
+    /**
+     * Текстура фона
+     */
     private Texture gameIm;
-    Skin buttonsSkin = new Skin();
- Stage stage = new Stage();
-    Map currentMap=null;
-        ArrayList<Map> mapsList=new ArrayList<Map>();
+    /**
+     * Скин кнопок
+     */
+    private Skin buttonsSkin = new Skin();
+    /**
+     * Сцена
+     */
+    private Stage stage = new Stage();
+
+    /**
+     * Текущая карта
+     */
+    private Map currentMap = null;
+    /**
+     * Список карт
+     */
+    private ArrayList<Map> mapsList = new ArrayList<Map>();
 
     public MapsScreen(TDGame aThis) {
         super();
@@ -42,45 +63,50 @@ class MapsScreen implements Screen {
         batch = new SpriteBatch();
         gameIm = new Texture("Intro.jpg");
         restart();
-        currentMap=mapsList.get(0);
-     
+        currentMap = mapsList.get(0);
 
     }
-    public void restart()
-    {
+
+    /**
+     * Функция для генерации карт
+     */
+    public void restart() {
         mapsList.clear();
-            mapsList.add(Map.GenerateMap1());
+        mapsList.add(Map.GenerateMap1());
         mapsList.add(Map.GenerateMap2());
         mapsList.add(Map.GenerateMap3());
-        currentMap=mapsList.get(0);
+        currentMap = mapsList.get(0);
         createButtons();
     }
 
-   private void createMapNameButt()
-   {
-       TextButton MapName = new TextButton(currentMap.name(), buttonsSkin); // Use the initialized skin
+    /**
+     * Функция создающая кнопки выбора карты
+     */
+    private void createMapNameButt() {
+        TextButton MapName = new TextButton(currentMap.name(), buttonsSkin); // Use the initialized skin
         MapName.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
         MapName.setTouchable(Touchable.enabled);
         stage.addActor(MapName);
-        
 
         MapName.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LevelScreen(game,currentMap));
+                game.setScreen(new LevelScreen(game, currentMap));
                 return true;
             }
         });
 
-   }
-    private void createButtons()
-    {
-           stage = new Stage();
-       Gdx.input.setInputProcessor(stage);// Make the stage consume event
-        buttonsSkin=game.createBasicSkin();
+    }
 
+    /**
+     * Функция создающая кнопки на экране
+     */
+    private void createButtons() {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);// Make the stage consume event
+        buttonsSkin = SkinForButton.createBasicSkin();
         createMapNameButt();
-        
+
         TextButton PrevMap = new TextButton("<-", buttonsSkin); // Use the initialized skin
         PrevMap.setBounds(0, 0, Gdx.graphics.getWidth() / 16, Gdx.graphics.getHeight() / 16);
         PrevMap.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2 - Gdx.graphics.getHeight() / 8);
@@ -94,11 +120,11 @@ class MapsScreen implements Screen {
         stage.addActor(NextMap);
 
         TextButton Back = new TextButton("Back", buttonsSkin); // Use the initialized skin
-        Back.setBounds(0, 0, Gdx.graphics.getWidth() /8, Gdx.graphics.getHeight() / 16);
-        Back.setPosition(Gdx.graphics.getWidth() / 32,Gdx.graphics.getHeight()*4/5);
+        Back.setBounds(0, 0, Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 16);
+        Back.setPosition(Gdx.graphics.getWidth() / 32, Gdx.graphics.getHeight() * 4 / 5);
         Back.setTouchable(Touchable.enabled);
         stage.addActor(Back);
-        
+
         Back.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
@@ -106,15 +132,14 @@ class MapsScreen implements Screen {
                 return true;
             }
         });
-        
+
         PrevMap.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                if(changeMapsOnList(currentMap.name(),1)==2)
-                {
-                    currentMap=mapsList.get(mapsList.size()-1);
+                if (changeMapsOnList(currentMap.name(), 1) == 2) {
+                    currentMap = mapsList.get(mapsList.size() - 1);
                 }
-                   createMapNameButt();
+                createMapNameButt();
                 return true;
             }
         });
@@ -122,33 +147,30 @@ class MapsScreen implements Screen {
         NextMap.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                if(changeMapsOnList(currentMap.name(),0)==2)
-                {
-                    currentMap=mapsList.get(0);
-              
-                    
+                if (changeMapsOnList(currentMap.name(), 0) == 2) {
+                    currentMap = mapsList.get(0);
+
                 }
-                  createMapNameButt();
+                createMapNameButt();
                 return true;
             }
         });
-       
 
     }
-     @Override
-    public void show() {   
-          Gdx.input.setInputProcessor(stage);
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
 
     }
 
     @Override
     public void render(float f) {
-              
 
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(gameIm, 0, 0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(gameIm, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
         stage.act();
         stage.draw();
@@ -180,7 +202,12 @@ class MapsScreen implements Screen {
         batch.dispose();
     }
 
-    // 0 - previous, 1 - next
+    /**
+     * Функция изменяющая текущие карты
+     *
+     * @param name название карты
+     * @param direction направление переключения
+     */
     int changeMapsOnList(String name, int direction) {
         int index = -1;
         int find = -1;
@@ -200,11 +227,9 @@ class MapsScreen implements Screen {
                         currentMap = map;
                         return 0;
                     }
-                } else {
-                    if (find == index + 1) {
-                        currentMap = map;
-                        return 1;
-                    }
+                } else if (find == index + 1) {
+                    currentMap = map;
+                    return 1;
                 }
 
             }

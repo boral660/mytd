@@ -5,7 +5,7 @@
  */
 package com.mygdx.game.enemies;
 
-import com.mygdx.game.navigation.Cell;
+import com.mygdx.game.mapAndOther.Cell;
 import java.util.ArrayList;
 import java.util.Random;
 

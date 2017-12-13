@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.game;
-import com.mygdx.game.navigation.Cell;
+package com.mygdx.game.mapAndOther;
 /**
  *  Главное здание
  * @author PK
@@ -18,7 +17,7 @@ public class MainConstruction {
      * @param position позиция главного здания
      * @param integrity прочность главного здания
      */
-    MainConstruction(Cell position, int integrity)
+  public MainConstruction(Cell position, int integrity)
    {
       
       _position = position;
@@ -35,7 +34,7 @@ public class MainConstruction {
       /**
     * Позиция здания
     */
-   Cell position()
+  public Cell position()
    {
        return _position;
    }
@@ -47,7 +46,7 @@ public class MainConstruction {
     /**
     * Максимальная прочность
     */
-   int maxIntegrity()
+  public int maxIntegrity()
    {
        return _maxIntegrity;
    }
@@ -61,7 +60,7 @@ public class MainConstruction {
     /**
     * Текущая прочность
     */
-   int integrity()
+  public int integrity()
    {
        return _integrity;
    }
@@ -71,7 +70,7 @@ public class MainConstruction {
      *
      * @param value количество прочности, на которое уменьшаем
      */
-   void DecriseIntegrity(int value)
+  public void DecriseIntegrity(int value)
    {
 
        if(_integrity-value<=0)
