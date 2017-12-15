@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package com.mygdx.game.mapAndOther;
+
+import com.badlogic.gdx.utils.TimeUtils;
+
 /**
  *  Главное здание
  * @author PK
@@ -17,14 +20,29 @@ public class MainConstruction {
      * @param position позиция главного здания
      * @param integrity прочность главного здания
      */
-  public MainConstruction(Cell position, int integrity)
+  public MainConstruction(Cell position, int integrity,Effects effect)
    {
       
       _position = position;
       _integrity = integrity;
       _maxIntegrity=integrity;
+      _effect=effect;
+      _lastEffectTime=0;
    }
-    
+   /**
+    * Перечисление возможных эффектов
+    */
+    public enum Effects { Damage, Heal, Money }
+     /**
+    * Эффекты
+    */
+   private Effects _effect;
+     /**
+    * Эффекты
+    */
+   public Effects effect(){
+        return _effect;
+    }
     
      /**
     * Позиция здания
@@ -50,7 +68,23 @@ public class MainConstruction {
    {
        return _maxIntegrity;
    }
-   
+    /**
+     * Время последней атаки
+     */
+    protected long _lastEffectTime;
+
+    /**
+     * Время последней атаки
+     */
+    public long lastEffectTime() {
+        return _lastEffectTime;
+    }
+      /**
+     * Время последней атаки
+     */
+    public void setLastEffectTime(long value) {
+        _lastEffectTime=value;
+    }
      
      /**
     * Текущая прочность
@@ -63,6 +97,17 @@ public class MainConstruction {
   public int integrity()
    {
        return _integrity;
+   }
+   /**
+    * Текущая прочность
+    */
+  public void addIntegrity(int value)
+     
+   {
+       if(_integrity+value<=_maxIntegrity)
+             _integrity+=value;
+       else
+           _integrity=_maxIntegrity;
    }
    
    /**

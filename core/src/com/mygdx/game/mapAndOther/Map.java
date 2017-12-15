@@ -146,7 +146,7 @@ public class Map {
      *
      */
     static public Map GenerateMap1() {
-        MainConstruction main = new MainConstruction(new Cell(8, 5), 200);
+        MainConstruction main = new MainConstruction(new Cell(8, 5), 200,MainConstruction.Effects.Damage);
         // Создать первую карту
         Map map = new Map("Long-long way", 100, main);
         for (int i = 0; i < 16; i++) {
@@ -210,7 +210,7 @@ public class Map {
      * Заполнение карты по второму шаблону
      */
     static public Map GenerateMap2() {
-        MainConstruction main = new MainConstruction(new Cell(7, 4), 350);
+        MainConstruction main = new MainConstruction(new Cell(7, 4), 350, MainConstruction.Effects.Heal);
         // Создать первую карту
         Map map = new Map("Two fronts", 115, main);
         for (int i = 0; i < 16; i++) {
@@ -255,7 +255,7 @@ public class Map {
      * Заполнение карты по третьему шаблону
      */
     static public Map GenerateMap3() {
-        MainConstruction main = new MainConstruction(new Cell(8, 5), 350);
+        MainConstruction main = new MainConstruction(new Cell(8, 5), 350,MainConstruction.Effects.Money);
         Map map = new Map("Random Waves", 60, main);
         map.roadCell().add(new Cell(0, 0));
         map.roadCell().add(new Cell(1, 0));

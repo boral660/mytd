@@ -27,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.defenseConstucts.DCFactory;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
+import com.mygdx.game.mapAndOther.MainConstruction;
 import com.mygdx.game.mapAndOther.Map;
 import com.mygdx.game.mapAndOther.SkinForButton;
 
@@ -189,6 +191,29 @@ public class LevelScreen implements Screen {
         }
 
     }
+    public void renderEffectMain()
+    {
+        if(map.main().lastEffectTime()==0 || TimeUtils.millis() - map.main().lastEffectTime()>  1000)
+        {
+        if(null!=map.main().effect())
+        switch (map.main().effect()) {
+           case Damage:
+               for (Enemy enemy : currentWave.enemies()) {
+                   enemy.reduseHP(1);
+               } break;
+           case Heal:
+               map.main().addIntegrity(1);
+               break;
+           case Money:
+               currentMoney+=1;
+               break;
+           default:
+               break;
+                      }
+           map.main().setLastEffectTime(TimeUtils.millis());
+        }
+        
+    }
   /**
      * Отрисовка врагов
      */
@@ -257,7 +282,7 @@ public class LevelScreen implements Screen {
             renderEnemy();
             //Количество врагов
             renderNode("Enemies: " + currentWave.enemies().size(), Gdx.graphics.getWidth() * 7 / 16, Gdx.graphics.getHeight() - 20, 20);
-
+            renderEffectMain();
         }
 
         if (_bullets.size() != 0) {
@@ -266,6 +291,8 @@ public class LevelScreen implements Screen {
 
         //Прочность главного строения
         renderNode(map.main().integrity() + "/" + map.main().maxIntegrity(), map.main().position().x() * Cell.Size, map.main().position().y() * Cell.Size + Cell.Size / 4, 15);
+        //Печать эффекта
+    renderNode(map.main().effect().toString(), map.main().position().x() * Cell.Size, map.main().position().y() * Cell.Size + Cell.Size / 2, 15);
         //Количество золота
         renderNode("Gold: " + currentMoney, Gdx.graphics.getWidth() * 13 / 16, Gdx.graphics.getHeight() - 20, 20);
         //Количество волн
