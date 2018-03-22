@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.TDGame;
+import com.mygdx.game.extentions.ModuleEngine;
 import com.mygdx.game.mapAndOther.Map;
 import java.util.ArrayList;
 import com.mygdx.game.mapAndOther.SkinForButton;
@@ -30,7 +31,11 @@ public class MapsScreen implements Screen {
     /**
      * Ссылка на игру
      */
-    TDGame game;
+    private TDGame game;
+    public TDGame getGame ()
+            {
+               return game;
+            }
     /**
      * Ссылка на сущность для отрисовки
      */
@@ -52,6 +57,10 @@ public class MapsScreen implements Screen {
      * Текущая карта
      */
     private Map currentMap = null;
+    public Map getMap ()
+            {
+               return currentMap;
+      }
     /**
      * Список карт
      */
@@ -91,7 +100,7 @@ public class MapsScreen implements Screen {
         MapName.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LevelScreen(game, currentMap));
+                game.setScreen(new LevelScreen(game, currentMap, false));
                 return true;
             }
         });
@@ -124,6 +133,12 @@ public class MapsScreen implements Screen {
         Back.setPosition(Gdx.graphics.getWidth() / 32, Gdx.graphics.getHeight() * 4 / 5);
         Back.setTouchable(Touchable.enabled);
         stage.addActor(Back);
+        
+        TextButton StartBot = new TextButton("StartBot", buttonsSkin); // Use the initialized skin
+        StartBot.setBounds(0, 0, Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 16);
+        StartBot.setPosition(Gdx.graphics.getWidth() / 2  + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16 + Gdx.graphics.getWidth() / 32, Gdx.graphics.getHeight() * 4 / 5);
+        StartBot.setTouchable(Touchable.enabled);
+        stage.addActor(StartBot);
 
         Back.addListener(new ClickListener() {
             @Override
@@ -132,6 +147,18 @@ public class MapsScreen implements Screen {
                 return true;
             }
         });
+        
+        StartBot.addListener(new ClickListener() {
+            @Override
+           public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+               String[] arr = new String[1];
+                arr[0] = "..\\build\\classes\\main\\com\\mygdx\\game\\extentions\\modules";
+               ModuleEngine.main(arr, game);
+           //    game.setScreen(new LevelScreen(game, currentMap));
+                return true;
+            }
+        });
+
 
         PrevMap.addListener(new ClickListener() {
             @Override

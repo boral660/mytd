@@ -110,7 +110,7 @@ public class LevelScreen implements Screen {
      */
     private ArrayList<Bullet> _bullets = new ArrayList();
 
-    public LevelScreen(TDGame aThis, Map aMap) {
+    public LevelScreen(TDGame aThis, Map aMap, boolean ItBot) {
         super();
         restart(aThis, aMap);
 

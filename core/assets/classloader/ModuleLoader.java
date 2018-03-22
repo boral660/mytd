@@ -1,5 +1,3 @@
-package com.mygdx.game.extentions;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
