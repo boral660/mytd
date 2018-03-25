@@ -4,7 +4,8 @@ import com.mygdx.game.TDGame;
 import java.io.File;
 
 public class ModuleEngine {
-
+    
+ public static Module _execute = null;
   public static void main(String args[], TDGame game) {
     String modulePath = args[0];
     System.out.print("Module path: ");
@@ -36,11 +37,10 @@ public class ModuleEngine {
                     System.out.println(moduleName);
 
                     Class clazz = loader.loadClass( "com.mygdx.game.extentions.modules." + moduleName);
-                    Module execute = (Module) clazz.newInstance();
+                    _execute = (Module) clazz.newInstance();
 
-                    execute.load(game);
-                    execute.run(game);
-                    execute.unload(game);
+                    _execute.load(game);
+                    _execute.run(game);
                 }
 
             } catch (ClassNotFoundException e) {

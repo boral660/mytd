@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.defenseConstucts.DefenseConstruction;
+import com.mygdx.game.extentions.ModuleEngine;
+import static com.mygdx.game.extentions.ModuleEngine._execute;
 import com.mygdx.game.mapAndOther.MainConstruction;
 import com.mygdx.game.mapAndOther.Map;
 import com.mygdx.game.mapAndOther.SkinForButton;
@@ -59,7 +61,7 @@ public class LevelScreen implements Screen {
      /**
      * Карта
      */
-    private Map map;
+    public Map map;
     /**
      * Текстуры для отрисовки
      */
@@ -79,11 +81,12 @@ public class LevelScreen implements Screen {
       /**
      * Текущее состояние карты
      */
-    private Cell currentCell = new Cell(0, 0);
-    private Wave currentWave;
-    private int numberWave;
-    private int currentMoney;
-    private boolean Win = false;
+    public Cell currentCell = new Cell(0, 0);
+    public Wave currentWave;
+    public int numberWave;
+    public int currentMoney;
+    public boolean Win = false;
+   public boolean _ItBot = false;
      /**
     * Переременые для отрисовки списка
     */
@@ -112,7 +115,8 @@ public class LevelScreen implements Screen {
 
     public LevelScreen(TDGame aThis, Map aMap, boolean ItBot) {
         super();
-        restart(aThis, aMap);
+     
+        restart(aThis, aMap,  ItBot);
 
     }
      /**
@@ -121,7 +125,7 @@ public class LevelScreen implements Screen {
      * @param aThis игра
      * @param aMap карта
      */
-    public void restart(TDGame aThis, Map aMap) {
+    public void restart(TDGame aThis, Map aMap, boolean ItBot) {
         game = aThis;
         map = aMap;
         stage = new Stage();
@@ -133,13 +137,14 @@ public class LevelScreen implements Screen {
         Panel = new Texture(Gdx.files.internal("Panel.png"));
         currentWave = null;
         numberWave = 0;
-
-        Gdx.input.setInputProcessor(multiplexer);
-        multiplexer.addProcessor(inputProcessor);
-        multiplexer.addProcessor(stage);
+         _ItBot=ItBot ;
+          Gdx.input.setInputProcessor(multiplexer);
+        if(!_ItBot){
+            multiplexer.addProcessor(inputProcessor);
+        }
+            multiplexer.addProcessor(stage);
         createStartButton();
         createExitButton();
-
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myfont.ttf"));
         parameter = new FreeTypeFontParameter();
         parameter.size = 15;
@@ -254,7 +259,8 @@ public class LevelScreen implements Screen {
 
     @Override
     public void render(float f) {
-
+        if(_ItBot){
+        ModuleEngine._execute.run(game);}
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -400,8 +406,9 @@ public class LevelScreen implements Screen {
         if ((currentMoney - dc.price()) >= 0) {
             map.defenseConst().add(dc);
             currentMoney -= dc.price();
+            if(!_ItBot){
             scrollPane.remove();
-            Gdx.input.setInputProcessor(multiplexer);
+            Gdx.input.setInputProcessor(multiplexer);}
         }
     }
          /**
@@ -473,6 +480,8 @@ public class LevelScreen implements Screen {
         exit.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+                            ModuleEngine._execute.unload(game);
+                      
                             game.mapsScreen.restart();
                              game.setScreen( game.mapsScreen );
                              
