@@ -1,12 +1,13 @@
 package com.mygdx.game.extentions;
 
 import com.mygdx.game.TDGame;
+import com.mygdx.game.screen.LevelScreen;
 import java.io.File;
 
 public class ModuleEngine {
     
  public static Module _execute = null;
-  public static void main(String args[], TDGame game) {
+  public static void main(String args[], LevelScreen ls) {
     String modulePath = args[0];
     System.out.print("Module path: ");
     System.out.println(modulePath);
@@ -38,9 +39,7 @@ public class ModuleEngine {
 
                     Class clazz = loader.loadClass( "com.mygdx.game.extentions.modules." + moduleName);
                     _execute = (Module) clazz.newInstance();
-
-                    _execute.load(game);
-                    _execute.run(game);
+                    _execute.load(ls);
                 }
 
             } catch (ClassNotFoundException e) {

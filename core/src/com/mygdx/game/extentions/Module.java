@@ -6,13 +6,14 @@
 package com.mygdx.game.extentions;
 
 import com.mygdx.game.TDGame;
+import com.mygdx.game.screen.LevelScreen;
 
 public interface Module {
 
   public static final int EXIT_SUCCESS = 0;
   public static final int EXIT_FAILURE = 1;
 
-  public void load(TDGame game);
+  public void load(LevelScreen ls);
   public int run(TDGame game);
   public void unload(TDGame game);
 }

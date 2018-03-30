@@ -61,7 +61,7 @@ public class LevelScreen implements Screen {
      /**
      * Карта
      */
-    public Map map;
+    private Map map;
     /**
      * Текстуры для отрисовки
      */
@@ -152,6 +152,49 @@ public class LevelScreen implements Screen {
         parameter.size = 20;
         node20 = generator.generateFont(parameter);
 
+    }
+    /**
+     * Получить здоровье главной базы
+     * @return - прочность базы
+     */
+    public int mainHP() {
+       return map.main().integrity();
+    }
+    
+      /**
+     * Получить здоровье главной базы
+      * @param - pos клетка
+     */
+    public boolean isRoad(Cell pos) {
+       return map.CheckRoad(pos);
+    }
+    
+       /**
+     * Клетка занята
+     * @param - pos клетка
+     */
+    public boolean isNotEmpty(Cell pos) {
+       return map.CheckCell(pos);
+    }
+
+       /**
+     * Высота карты
+     */
+    public int mapHeight() {
+       return map.height();
+    }
+     /**
+     * Получить дорогу
+     */
+    public ArrayList<Cell> getRoad() {
+       return map.roadCell();
+    }
+    
+       /**
+     * Ширина карты
+     */
+    public int mapWidth() {
+       return map.width();
     }
 
    /**
@@ -459,12 +502,18 @@ public class LevelScreen implements Screen {
         start.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                currentWave = map.waves().get(numberWave);
+                 startWave();
 
                 return true;
             }
         });
     }
+    
+    public void startWave()
+    {
+        currentWave = map.waves().get(numberWave);
+    }
+    
          /**
      * Создание кнопки выхода в меню
      */

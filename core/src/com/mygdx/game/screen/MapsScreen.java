@@ -153,8 +153,9 @@ public class MapsScreen implements Screen {
            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
                String[] arr = new String[1];
                 arr[0] = "..\\build\\classes\\main\\com\\mygdx\\game\\extentions\\modules";
-               ModuleEngine.main(arr, game);
-           //    game.setScreen(new LevelScreen(game, currentMap));
+               LevelScreen ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
+                ModuleEngine.main(arr,ls);
+               game.setScreen(ls);
                 return true;
             }
         });

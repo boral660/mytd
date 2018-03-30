@@ -10,24 +10,19 @@ import com.mygdx.game.TDGame;
 import com.mygdx.game.defenseConstucts.DCFactory;
 import com.mygdx.game.extentions.Module;
 import com.mygdx.game.mapAndOther.Cell;
-import com.mygdx.game.screen.IntroScreen;
 import com.mygdx.game.screen.LevelScreen;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ModulePrinter implements Module {
+public class EasyModule implements Module {
 
     private long _lastActionTime = 0;
     private LevelScreen _ls = null;
     private Cell _targetPos = null;
 
     @Override
-    public void load(TDGame game) {
+    public void load( LevelScreen ls) {
         System.out.println("Module " + this.getClass() + " loading ...");
-        _ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
-        game.setScreen(_ls);
+        _ls = ls;
     }
 
     @Override
@@ -36,7 +31,7 @@ public class ModulePrinter implements Module {
             _lastActionTime = TimeUtils.millis();
             System.out.println("Module " + this.getClass() + "Bot action");
             //Определить состояние игры
-            if (_ls.map.main().integrity() > 0 && !_ls.Win) {
+            if (_ls.mainHP() > 0 && !_ls.Win) {
                 if (_targetPos == null) {
                     // Определить позицию для башни.
                     _targetPos = definePosition(game);
@@ -48,11 +43,11 @@ public class ModulePrinter implements Module {
                     // Передвинуть ячейку
                     _ls.currentCell = _targetPos;
                     // Поставить башню
-                    if (num == 0 && !_ls.map.CheckRoad(_targetPos)) {
+                    if (num == 0 && !_ls.isRoad(_targetPos)) {
                         _ls.buyTower(DCFactory.getTower("IceTower", _ls.currentCell));
-                    } else if (num == 1 && !_ls.map.CheckRoad(_targetPos)) {
+                    } else if (num == 1 && !_ls.isRoad(_targetPos)) {
                         _ls.buyTower(DCFactory.getTower("ArcherTower", _ls.currentCell));
-                    } else if (num == 2 && !_ls.map.CheckRoad(_targetPos)) {
+                    } else if (num == 2 && !_ls.isRoad(_targetPos)) {
                         _ls.buyTower(DCFactory.getTower("LightTower", _ls.currentCell));
                     }
                     _targetPos = null;
@@ -71,7 +66,7 @@ public class ModulePrinter implements Module {
 
                 if (_ls.currentMoney < 25) {
                     //Запустить волну, если не запущена
-                    _ls.currentWave = _ls.map.waves().get(_ls.numberWave);
+                    _ls. startWave();
                 }
             }
 
@@ -86,23 +81,23 @@ public class ModulePrinter implements Module {
 
     public Cell definePosition(TDGame game) {
         Random rand = new Random();
-        int num = rand.nextInt(_ls.map.roadCell().size());
-        Cell roadCell = _ls.map.roadCell().get(num);
+        int num = rand.nextInt(_ls.getRoad().size());
+        Cell roadCell = _ls.getRoad().get(num);
 
-        if (!_ls.map.CheckCell(new Cell(roadCell.x() + 1, roadCell.y()))
-                && !_ls.map.CheckRoad(new Cell(roadCell.x() + 1, roadCell.y()))
-                && roadCell.x() + 1 < _ls.map.width()) {
+        if (!_ls.isNotEmpty(new Cell(roadCell.x() + 1, roadCell.y()))
+                && !_ls.isRoad(new Cell(roadCell.x() + 1, roadCell.y()))
+                && roadCell.x() + 1 < _ls.mapWidth()) {
             return new Cell(roadCell.x() + 1, roadCell.y());
-        } else if (!_ls.map.CheckCell(new Cell(roadCell.x(), roadCell.y() + 1))
-                && !_ls.map.CheckRoad(new Cell(roadCell.x(), roadCell.y() + 1))
-                && roadCell.y() + 1 < _ls.map.height()) {
+        } else if (!_ls.isNotEmpty(new Cell(roadCell.x(), roadCell.y() + 1))
+                && !_ls.isRoad(new Cell(roadCell.x(), roadCell.y() + 1))
+                && roadCell.y() + 1 < _ls.mapHeight()) {
             return new Cell(roadCell.x(), roadCell.y() + 1);
-        } else if (!_ls.map.CheckCell(new Cell(roadCell.x() - 1, roadCell.y()))
-                && !_ls.map.CheckRoad(new Cell(roadCell.x() - 1, roadCell.y()))
+        } else if (!_ls.isNotEmpty(new Cell(roadCell.x() - 1, roadCell.y()))
+                && !_ls.isRoad(new Cell(roadCell.x() - 1, roadCell.y()))
                 && roadCell.x() - 1 > -1) {
             return new Cell(roadCell.x() - 1, roadCell.y());
-        } else if (!_ls.map.CheckCell(new Cell(roadCell.x(), roadCell.y() - 1))
-                && !_ls.map.CheckRoad(new Cell(roadCell.x(), roadCell.y() - 1))
+        } else if (!_ls.isNotEmpty(new Cell(roadCell.x(), roadCell.y() - 1))
+                && !_ls.isRoad(new Cell(roadCell.x(), roadCell.y() - 1))
                 && roadCell.y() - 1 > -1) {
             return new Cell(roadCell.x(), roadCell.y() - 1);
         }
