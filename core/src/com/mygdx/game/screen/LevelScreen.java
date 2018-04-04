@@ -529,7 +529,9 @@ public class LevelScreen implements Screen {
         exit.addListener(new ClickListener() {
             @Override
             public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-                            ModuleEngine._execute.unload(game);
+
+                if(_ItBot)
+                {ModuleEngine._execute.unload(game);}
                       
                             game.mapsScreen.restart();
                              game.setScreen( game.mapsScreen );

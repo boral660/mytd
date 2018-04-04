@@ -19,20 +19,23 @@ public class ModuleEngine {
     /**
      * Получаем список доступных модулей.
      */
-    File dir = new File(modulePath);
+   /** File dir = new File(modulePath);
     String[] modules = dir.list();
     if (modules == null)
     {
         System.out.println("Module path does not denote a folder");
         return;
-    }
+    }*/
+   
     /**
      * Загружаем и исполняем каждый модуль.
      */
-    for (String module: modules) {
+ 
+   String module = modulePath;
         if (module.endsWith(".class")) {
             try {
-                String moduleName = module.split(".class")[0];
+                String moduleName = module.split("modules\\\\")[1];
+               moduleName = moduleName.split("\\.class")[0];
                 if (moduleName.equals("Module") == false) {
                     System.out.print("Executing loading module: ");
                     System.out.println(moduleName);
@@ -50,7 +53,7 @@ public class ModuleEngine {
                 e.printStackTrace();
             }
         }
-    }
+    
 
 
   }

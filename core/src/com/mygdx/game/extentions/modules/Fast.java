@@ -13,7 +13,7 @@ import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.screen.LevelScreen;
 import java.util.Random;
 
-public class EasyModule implements Module {
+public class Fast implements Module {
 
     private long _lastActionTime = 0;
     private LevelScreen _ls = null;
@@ -21,13 +21,13 @@ public class EasyModule implements Module {
 
     @Override
     public void load( LevelScreen ls) {
-        System.out.println("Module " + this.getClass() + " loading ...");
+        System.out.println("Module " + this.getClass() + " loading ..dfsdf.");
         _ls = ls;
     }
 
     @Override
     public int run(TDGame game) {
-        if (_lastActionTime == 0 || (TimeUtils.millis() - _lastActionTime > 1 * 300)) {
+        if (_lastActionTime == 0 || (TimeUtils.millis() - _lastActionTime > 1 * 50)) {
             _lastActionTime = TimeUtils.millis();
             System.out.println("Module " + this.getClass() + "Bot action");
             //Определить состояние игры

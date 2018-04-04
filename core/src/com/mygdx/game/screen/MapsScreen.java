@@ -20,6 +20,8 @@ import com.mygdx.game.extentions.ModuleEngine;
 import com.mygdx.game.mapAndOther.Map;
 import java.util.ArrayList;
 import com.mygdx.game.mapAndOther.SkinForButton;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  * Экран выбора карты
@@ -44,6 +46,8 @@ public class MapsScreen implements Screen {
      * Текстура фона
      */
     private Texture gameIm;
+    
+   public String filePath="";
     /**
      * Скин кнопок
      */
@@ -151,11 +155,30 @@ public class MapsScreen implements Screen {
         StartBot.addListener(new ClickListener() {
             @Override
            public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
-               String[] arr = new String[1];
-                arr[0] = "..\\build\\classes\\main\\com\\mygdx\\game\\extentions\\modules";
-               LevelScreen ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
-                ModuleEngine.main(arr,ls);
-               game.setScreen(ls);
+
+               JFileChooser fileopen = new JFileChooser();    
+                fileopen.setCurrentDirectory(new File("..\\build\\classes\\main\\com\\mygdx\\game\\extentions\\modules"));
+               int ret = fileopen.showDialog(null, "Открыть файл");
+               filePath="";
+               if(ret == JFileChooser.APPROVE_OPTION)
+                {
+                    filePath =  fileopen.getSelectedFile().getPath();
+                      System.out.println(filePath);
+                }
+               
+               Gdx.app.postRunnable(new Runnable(){
+                   @Override
+                   public void run() {
+                       if(filePath != ""){
+                            String[] arr = new String[1];
+                           arr[0] = filePath;
+                            LevelScreen ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
+                            ModuleEngine.main(arr,ls);
+                            game.setScreen(ls);
+                       }    
+                   }
+                   
+               });
                 return true;
             }
         });
