@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.mapAndOther.Direction;
+import com.mygdx.game.mapAndOther.Map;
 import com.mygdx.game.mapAndOther.Pair;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public abstract class Enemy {
      * @param pictForBullet изоображение снаряда
      *
      */
-    public Enemy(Cell pos, ArrayList<Cell> road, int hp, int dmg, float speed, int moneyForKill, float atkSpeed, TextureRegion pict, TextureRegion pictForBullet) {
+    public Enemy(Cell pos, ArrayList<Cell> road, int hp, int dmg, float speed, int moneyForKill, float atkSpeed, TextureRegion pict, TextureRegion pictForBullet, Map map) {
         _healPoints = hp;
         _damage = dmg;
         _speed = speed;
@@ -49,12 +50,17 @@ public abstract class Enemy {
         _direction = Direction.south();
         _attackSpeed = atkSpeed;
         Random rand = new Random();
+         _map = map;
 
         _x = pos.x() * Cell.Size + rand.nextInt(32);
         _y = pos.y() * Cell.Size + rand.nextInt(32);
         _path = createRoad();
     }
 
+        /**
+     * Карта
+     */
+    protected Map _map;
     /**
      * Скорость атаки
      */
@@ -232,7 +238,7 @@ public abstract class Enemy {
      * Рассчитать шаги и путь врага
      *
      */
-    private List<Pair<Direction, Float>> createRoad() {
+    protected List<Pair<Direction, Float>> createRoad() {
         List<Pair<Direction, Float>> road = new ArrayList<Pair<Direction, Float>>();
         Cell temp = _position;
         for (Cell cell : _roadCell) {
@@ -243,13 +249,13 @@ public abstract class Enemy {
         road.remove(0);
         return road;
     }
-    private List<Pair<Direction, Float>> _path;
+    protected List<Pair<Direction, Float>> _path;
 
     /**
      * Направление взгляда
      *
      */
-    private Direction _direction;
+    protected Direction _direction;
 
     public Direction direction() {
         return _direction;

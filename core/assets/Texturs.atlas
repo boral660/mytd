@@ -5,147 +5,154 @@ filter: Nearest,Nearest
 repeat: none
 ArcherTower
   rotate: false
-  xy: 1, 2
+  xy: 1, 14
   size: 113, 113
   orig: 113, 113
   offset: 0, 0
   index: -1
 IceTower
   rotate: false
-  xy: 116, 2
+  xy: 116, 14
   size: 113, 113
   orig: 113, 113
   offset: 0, 0
   index: -1
 LightTower
   rotate: false
-  xy: 231, 2
+  xy: 231, 14
   size: 113, 113
   orig: 113, 113
   offset: 0, 0
   index: -1
 ElectricBomb
   rotate: false
-  xy: 346, 44
+  xy: 346, 56
   size: 71, 71
   orig: 71, 71
   offset: 0, 0
   index: -1
 Spike
   rotate: false
-  xy: 419, 47
+  xy: 419, 59
   size: 69, 68
   orig: 69, 68
   offset: 0, 0
   index: -1
 Wire
   rotate: false
-  xy: 490, 58
+  xy: 490, 70
   size: 74, 57
   orig: 74, 57
   offset: 0, 0
   index: -1
 Explode
   rotate: false
-  xy: 566, 57
+  xy: 566, 69
   size: 71, 58
   orig: 71, 58
   offset: 0, 0
   index: -1
 Nothing
   rotate: false
-  xy: 639, 57
+  xy: 639, 69
   size: 71, 58
   orig: 71, 58
   offset: 0, 0
   index: -1
 MagicBall
   rotate: false
-  xy: 712, 60
+  xy: 712, 72
   size: 55, 55
   orig: 55, 55
   offset: 0, 0
   index: -1
 Hit
   rotate: false
-  xy: 769, 68
+  xy: 769, 80
   size: 57, 47
   orig: 57, 47
   offset: 0, 0
   index: -1
 MetallicBall
   rotate: false
-  xy: 828, 68
+  xy: 828, 80
   size: 48, 47
   orig: 48, 47
   offset: 0, 0
   index: -1
 Balista
   rotate: false
-  xy: 346, 3
+  xy: 346, 15
   size: 36, 39
   orig: 36, 39
   offset: 0, 0
   index: -1
 Ork
   rotate: false
-  xy: 878, 85
+  xy: 878, 97
   size: 37, 30
   orig: 37, 30
   offset: 0, 0
   index: -1
 LizardArcher
   rotate: false
-  xy: 384, 4
+  xy: 384, 16
   size: 26, 38
   orig: 26, 38
   offset: 0, 0
   index: -1
 Viking
   rotate: false
-  xy: 917, 86
+  xy: 917, 98
   size: 33, 29
   orig: 33, 29
   offset: 0, 0
   index: -1
 SkeletonMage
   rotate: false
-  xy: 952, 85
+  xy: 952, 97
   size: 29, 30
   orig: 29, 30
   offset: 0, 0
   index: -1
 Slime
   rotate: false
-  xy: 983, 84
+  xy: 983, 96
   size: 24, 31
   orig: 24, 31
   offset: 0, 0
   index: -1
 Hunter
   rotate: false
-  xy: 412, 1
+  xy: 412, 13
   size: 22, 41
   orig: 22, 41
   offset: 0, 0
   index: -1
-SkeletonWarrior
+SlimeMage
   rotate: false
-  xy: 436, 21
-  size: 24, 24
-  orig: 24, 24
+  xy: 436, 26
+  size: 24, 31
+  orig: 24, 31
   offset: 0, 0
   index: -1
 Bomber
   rotate: false
-  xy: 462, 22
+  xy: 436, 1
   size: 24, 23
   orig: 24, 23
   offset: 0, 0
   index: -1
+SkeletonWarrior
+  rotate: false
+  xy: 462, 33
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
 Rat
   rotate: false
-  xy: 878, 70
+  xy: 878, 82
   size: 12, 13
   orig: 12, 13
   offset: 0, 0

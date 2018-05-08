@@ -88,6 +88,7 @@ public class MapsScreen implements Screen {
         mapsList.add(Map.GenerateMap1());
         mapsList.add(Map.GenerateMap2());
         mapsList.add(Map.GenerateMap3());
+        mapsList.add(Map.GenerateMap4());
         currentMap = mapsList.get(0);
         createButtons();
     }

@@ -169,37 +169,37 @@ public class Map {
 
         // Создаём первую волну
         ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
+        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Slime", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
         map.waves().add(new Wave(enemies));
         // Cоздаём вторую волну
         enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Viking", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Bomber", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
         map.waves().add(new Wave(enemies));
         // Cоздаём третью волну
         enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell()));
-        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell()));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Rat", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Balista", map.roadCell().get(0), map.roadCell(), map));
+        enemies.add(EnemyFactory.getEnemy("Ork", map.roadCell().get(0), map.roadCell(), map));
 
         map.waves().add(new Wave(enemies));
 
@@ -224,9 +224,9 @@ public class Map {
             Left_road.add(new Cell(i, 4));
         }
         ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road));
-        enemies.add(EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road));
-        enemies.add(EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road));
+        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road, map));
+        enemies.add(EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road, map));
+        enemies.add(EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road, map));
         map.waves().add(new Wave(enemies));
         // Создаём волну второго фронта
         ArrayList<Cell> Right_road = new ArrayList();
@@ -234,19 +234,19 @@ public class Map {
             Right_road.add(new Cell(i, 4));
         }
         enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road));
-        enemies.add(EnemyFactory.getEnemy("Ork", Right_road.get(0), Right_road));
-        enemies.add(EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road));
+        enemies.add(EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road, map));
+        enemies.add(EnemyFactory.getEnemy("Ork", Right_road.get(0), Right_road, map));
+        enemies.add(EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road, map));
         map.waves().add(new Wave(enemies));
 
         // Cоздаём третью волну
         enemies = new ArrayList<Enemy>();
-        enemies.add(EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road));
-        enemies.add(EnemyFactory.getEnemy("Ork", Right_road.get(0), Right_road));
-        enemies.add(EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road));
-        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road));
-        enemies.add(EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road));
-        enemies.add(EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road));
+        enemies.add(EnemyFactory.getEnemy("Viking", Right_road.get(0), Right_road, map));
+        enemies.add(EnemyFactory.getEnemy("Ork", Right_road.get(0), Right_road, map));
+        enemies.add(EnemyFactory.getEnemy("Balista", Right_road.get(0), Right_road, map));
+        enemies.add(EnemyFactory.getEnemy("SkeletonWarrior", Left_road.get(0), Left_road, map));
+        enemies.add(EnemyFactory.getEnemy("Slime", Left_road.get(0), Left_road, map));
+        enemies.add(EnemyFactory.getEnemy("Rat", Left_road.get(0), Left_road, map));
         map.waves().add(new Wave(enemies));
         return map;
     }
@@ -274,9 +274,64 @@ public class Map {
         int num = rand.nextInt(15) + 1;
 
         for (int i = 0; i < num; i++) {
-            map.waves().add(Wave.createRandomWave(i + 2, map.roadCell()));
+            map.waves().add(Wave.createRandomWave(i + 2, map.roadCell(),map));
         }
 
+        return map;
+    }
+    
+     /**
+     * Заполнение карты по третьему шаблону
+     */
+    static public Map GenerateMap4() {
+       MainConstruction main = new MainConstruction(new Cell(0, 6), 1000,MainConstruction.Effects.Money);
+         // Создать первую карту
+        Map map = new Map("HouseOnRoad", 115, main);
+        for (int i = 0; i < 16; i++) {
+                map.roadCell().add(new Cell(i, 0));
+                map.roadCell().add(new Cell(i, 1));
+                map.roadCell().add(new Cell(i, 2));
+        }
+          for (int i = 3; i < 8; i++) {
+                map.roadCell().add(new Cell(15, i));
+                 map.roadCell().add(new Cell(14, i));
+                  map.roadCell().add(new Cell(13, i));
+        }
+
+       
+        for (int i = 14; i > 0; i--) {
+                map.roadCell().add(new Cell(i, 7));
+                map.roadCell().add(new Cell(i, 6));
+                map.roadCell().add(new Cell(i, 5));
+        }
+         map.roadCell().add(new Cell(0, 7));
+          map.roadCell().add(new Cell(0, 5));
+            
+    
+        ArrayList<Cell> roadForEnemy = new ArrayList<Cell>();
+        
+             for (int i = 0; i < 15; i++) {
+                roadForEnemy.add(new Cell(i, 1));
+        }
+          for (int i = 3; i < 7; i++) {
+                roadForEnemy.add(new Cell(14, i));
+        }
+       
+        for (int i = 14; i > 0; i--) {
+               roadForEnemy.add(new Cell(i, 7));
+        }
+     
+        Random rand = new Random();
+        int num = rand.nextInt(15) + 1;
+
+        // Cоздаём третью волну
+        for (int i = 0; i < num; i++) {
+            map.waves().add(Wave.createRandomWave(i + 2, roadForEnemy,map));
+            map.waves().get( i).enemies().add(EnemyFactory.getEnemy("Teleporter", roadForEnemy.get(0), roadForEnemy, map));
+            map.waves().get( i).enemies().add(EnemyFactory.getEnemy("Teleporter", roadForEnemy.get(0), roadForEnemy, map));
+            map.waves().get( i).enemies().add(EnemyFactory.getEnemy("Teleporter", roadForEnemy.get(0), roadForEnemy, map));
+            map.waves().get( i).enemies().add(EnemyFactory.getEnemy("Teleporter", roadForEnemy.get(0), roadForEnemy, map));
+        }
         return map;
     }
 
