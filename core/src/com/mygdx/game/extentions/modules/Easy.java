@@ -15,7 +15,7 @@ import com.mygdx.game.mapAndOther.Cell;
 import com.mygdx.game.screen.LevelScreen;
 import java.util.Random;
 
-public class Easy implements Module {
+1public class Easy implements Module {
 
     public long _lastActionTime = 0;
     public LevelScreen _ls = null;

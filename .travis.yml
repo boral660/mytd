@@ -9,5 +9,5 @@ install:
 
 script:
   -  ./gradlew check
-  - ant test
+  - ./gradlew test
   
