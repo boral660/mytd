@@ -84,15 +84,15 @@ public class Easy implements Module {
     }
     
     public Cell moveToTarget(Cell curPos, Cell targetPos) {
-        if (curPos.x() > targetPos.x()) {
-           return new Cell(curPos.x() - 1, curPos.y());
-        } else if (curPos.x() < targetPos.x()) {
-            return new Cell(curPos.x() + 1, curPos.y());
-        } else if (curPos.y() > targetPos.y()) {
-            return new Cell(curPos.x(), curPos.y() - 1);
-        } else if (curPos.y() < targetPos.y()) {
-            return new Cell(curPos.x(), curPos.y() + 1);
-        } 
+//        if (curPos.x() > targetPos.x()) {
+//           return new Cell(curPos.x() - 1, curPos.y());
+//        } else if (curPos.x() < targetPos.x()) {
+//            return new Cell(curPos.x() + 1, curPos.y());
+//        } else if (curPos.y() > targetPos.y()) {
+//            return new Cell(curPos.x(), curPos.y() - 1);
+//        } else if (curPos.y() < targetPos.y()) {
+//            return new Cell(curPos.x(), curPos.y() + 1);
+//        } 
             return null;
 
     }
