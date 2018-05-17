@@ -60,7 +60,6 @@ public class EasyTest {
         Cell want = new Cell(0,0);
    
         Cell result = instance.moveToTarget(currentCell,targCell);
-        // TODO review the generated test code and remove the default call to fail.
         assertFalse(want.equals(result));
     }
      /**
@@ -77,7 +76,6 @@ public class EasyTest {
         Cell want = new Cell(0,1);
    
         Cell result = instance.moveToTarget(currentCell,targCell);
-        // TODO review the generated test code and remove the default call to fail.
         assertFalse(want.equals(result));
     }
     
@@ -94,8 +92,7 @@ public class EasyTest {
         Cell want = new Cell(1,0);
    
         Cell result = instance.moveToTarget(currentCell,targCell);
-        // TODO review the generated test code and remove the default call to fail.
-        assertTrue(want.equals(result));
+        assertFalse(want.equals(result));
     }
     
      /**
